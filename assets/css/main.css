@@ -510,6 +510,12 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 
   /* Lo que ya viaja dentro de .hero__inner no debe animarse dos veces. */
   .hero__inner [data-anima] { animation: none; opacity: 1; transform: none; }
+
+  /* Y la banda de cifras vive SOBRE el pliegue en escritorio. Con la entrada
+     ligada al scroll, quien abra la pagina y no baje la deja a media opacidad
+     para siempre --- un estado en reposo, no un fotograma. Ahi el efecto es el
+     contador, que corre solo. */
+  .stats [data-anima] { animation: none; opacity: 1; transform: none; }
 }
 
 /* Sin scroll timelines: mismo lenguaje, disparado al entrar en pantalla.

@@ -1,5 +1,7 @@
-# TEMPORAL — el sitio vive todavia en dispromed.github.io y no debe indexarse.
-# QUITAR ESTE BLOQUEO EL DIA DEL GO-LIVE, cuando el dominio propio este activo.
-# Ver la lista de go-live en README.md.
+# El sitio esta publicado en su dominio propio y debe indexarse.
+# El bloqueo temporal se retiro el 2026-09-01, junto con la publicacion de
+# la politica de tratamiento de datos que lo condicionaba.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://dispromed.com.co/sitemap.xml

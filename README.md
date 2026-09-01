@@ -116,25 +116,58 @@ Detalle de por qué cada fichero generado tiene la forma que tiene:
 
 ---
 
-## Lista de go-live — nada de esto está hecho
+## Lista de go-live
 
 **Contenido:**
 
 - [x] Razón social, NIT, dirección, ciudad, teléfono y horario — confirmados por el cliente el 2026-08-31
 - [x] 23 años de operación
 - [ ] **WhatsApp** — el cliente no lo dio; hoy la web no lo ofrece
-- [ ] **Número real de referencias** — la cifra sale de contar el catálogo, no de estimarla
+- [x] **Número real de referencias** — 2.877, contadas del CSV y regeneradas por CI
 - [ ] Foto del banner — horizontal, con espacio libre a la izquierda para el texto
 - [ ] Confirmar los 8 sectores: los deduje del catálogo, no de una lista suya
 - [ ] Confirmar qué marcas se pueden declarar como **distribución autorizada** (estar en el catálogo no basta) y conseguir sus logotipos en SVG
-- [ ] Redactar la **política de tratamiento de datos** (Ley 1581 de 2012). Hoy es un marcador, y el pie ya la enlaza.
+- [x] **Política de tratamiento de datos** publicada el 2026-09-01 — versión preliminar, pendiente de revisión jurídica y de adopción formal por Dispromed. Ver «Pendiente en la política» abajo.
 
 **Publicación:**
 
-- [ ] Quitar el `Disallow: /` de `robots.txt` ← si se olvida, Google nunca indexa el sitio
-- [ ] Crear el fichero `CNAME` con `dispromed.com.co` (el workflow lo detecta solo)
+- [x] Quitar el `Disallow: /` de `robots.txt` — retirado el 2026-09-01
+- [x] Crear el fichero `CNAME` con `dispromed.com.co` (el workflow lo detecta solo)
 - [ ] *Settings → Pages → Custom domain* y, cuando emita el certificado, **Enforce HTTPS**
 - [ ] Segundo propietario de la organización, de parte de Dispromed
+
+**Pendiente en la política de datos — solo Dispromed puede cerrarlo:**
+
+La página se publicó el 2026-09-01 retirando los recuadros de trabajo que llevaba.
+Esto es lo que decían, porque **sigue sin resolverse** y la versión definitiva tiene
+que responderlo:
+
+- **Correo de atención al titular.** Se publicó `dispromed@dispromed.com.co` por ser un
+  buzón corporativo y no el de un asesor: este canal debe sobrevivir a los cambios de
+  personal. **Alguien tiene que leerlo todos los días** — los términos de respuesta
+  (10 y 15 días hábiles) corren aunque nadie lo abra, y un canal legal desatendido es
+  peor que no tenerlo.
+- **¿Conserva Dispromed datos de pacientes o información de salud de terceros?** Por la
+  naturaleza del negocio no debería —vende insumos a instituciones, no atiende
+  pacientes—, pero si en algún proceso llegara a recibirlos, la política debe ampliarse:
+  los datos de salud son *sensibles*, exigen autorización reforzada y advertir al titular
+  de que no está obligado a entregarlos.
+- **Enumerar los terceros** a los que efectivamente entrega datos —transportadora,
+  plataforma de correo, software contable, portal de pedidos—. El §12 los describe hoy
+  por categorías; el titular tiene derecho a saber **quiénes son**.
+- **Fecha de vigencia y adopción.** Se publicó «vigente desde el 1 de septiembre de
+  2026». Falta la constancia de que Dispromed la adoptó formalmente.
+- **Registro Nacional de Bases de Datos (RNBD).** Las sociedades cuyos activos superan el
+  umbral fijado por la normativa deben inscribir sus bases ante la SIC. Es un trámite
+  **distinto** de este documento; Dispromed debe verificar con su contador si le aplica.
+- ⚠️ **El §14 caduca solo.** Dice que el sitio no tiene formularios, ni cookies de
+  análisis, ni seguimiento. El día que se añada un formulario de contacto, una
+  herramienta de analítica o un chat, **ese párrafo pasa a ser falso** y probablemente
+  haga falta un aviso de cookies.
+
+> La versión publicada **no ha sido revisada por un abogado**. Es una redacción sobre la
+> Ley 1581 de 2012 hecha para que el sitio pudiera indexarse, con el compromiso expreso
+> de reemplazarla por la definitiva.
 
 **DNS en GoDaddy — en este orden, y el orden importa:**
 

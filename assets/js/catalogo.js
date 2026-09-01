@@ -55,13 +55,34 @@
     return conGuiones.replace(/^-+|-+$/g, '');
   }
 
+  // El <script> de ESTE fichero, capturado en el momento en que se ejecuta.
+  // `document.currentScript` es fiable aqui, incluido con `defer`.
+  //
+  // Antes se cogia el ULTIMO <script> del documento dando por hecho que era
+  // este. Bastaba anadir cualquier otro script detras para que la ruta a data/
+  // se calculara sobre el fichero equivocado ---y el `.catch()` de mas abajo,
+  // que existe para no molestar al visitante sin conexion, escondia el fallo
+  // sin un solo error en consola: la home se quedaba con los literales
+  // escritos a mano y el buscador no encontraba nada. Paso de verdad al
+  // anadir efectos.js. El fail-soft es correcto; la suposicion no lo era.
+  // El guardia de `typeof document` no es defensivo porque si: scripts/
+  // test_calculo_anios.js hace require() de este fichero en Node, donde no hay
+  // DOM. La version anterior sobrevivia a eso por accidente ---leia el DOM
+  // dentro de una funcion que el test nunca llama---; capturarlo aqui arriba
+  // lo rompia. Se captura arriba a proposito: `document.currentScript` solo es
+  // valido MIENTRAS el script se ejecuta, y para cuando alguien llama a
+  // rutaDatos() ya vale null.
+  var ESTE_SCRIPT = typeof document !== 'undefined'
+    ? (document.currentScript || document.querySelector('script[src*="catalogo.js"]'))
+    : null;
+
   function rutaDatos(nombre) {
     // catalogo.js se sirve tanto desde "assets/js/" (home) como desde
     // "../assets/js/" (catalogo/*.html) — la ruta a data/ se resuelve
     // relativa a la posición del propio script, no a la página que lo usa.
-    var scripts = document.getElementsByTagName('script');
-    var actual = scripts[scripts.length - 1];
-    var base = actual && actual.src ? actual.src.replace(/assets\/js\/catalogo\.js.*$/, '') : '';
+    var base = ESTE_SCRIPT && ESTE_SCRIPT.src
+      ? ESTE_SCRIPT.src.replace(/assets\/js\/catalogo\.js.*$/, '')
+      : '';
     return base + 'data/' + nombre;
   }
 

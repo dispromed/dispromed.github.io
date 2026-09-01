@@ -202,7 +202,7 @@ def _pie() -> str:
 
 def _head(titulo: str, descripcion: str, ruta_canonica: str, incluir_script: bool) -> str:
     script = (
-        '\n<script defer src="../assets/js/catalogo.js?v=1"></script>' if incluir_script else ""
+        '\n<script defer src="../assets/js/catalogo.js?v=2"></script>' if incluir_script else ""
     )
     return f"""<!doctype html>
 <html lang="es-CO">
@@ -216,7 +216,8 @@ def _head(titulo: str, descripcion: str, ruta_canonica: str, incluir_script: boo
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="../assets/css/main.css?v=11">{script}
+<link rel="stylesheet" href="../assets/css/main.css?v=12">{script}
+<script defer src="../assets/js/efectos.js?v=1"></script>
 </head>
 <body>
 """
