@@ -74,22 +74,49 @@ transparente. El riel los sirve a 34 px.
 
 ## Estado al 2026-08-31
 
-**Seis en el riel:** 3M · Kimberly-Clark · Nipro · HP · Sharpie · Faber-Castell.
-Origen: Wikimedia Commons, salvo indicacion contraria. Los cinco SVG se revisaron
-antes de subirlos: sin `<script>`, sin referencias externas, sin rasters incrustados.
-A 3M y Sharpie hubo que anadirles `viewBox` — sin el, un `<img>` no escala igual
-en todos los navegadores.
+**14 logotipos en el riel.** El riel ya NO muestra nombres en texto: la marca
+que no tiene logotipo, no aparece.
 
-**Sin conseguir todavia:**
+| Marca | Archivo | Origen |
+|---|---|---|
+| Berhlan | `berhlan.png` | berhlan.com |
+| Elite | `elite.png` | eliteprofessional.com.co |
+| 3M | `3m.svg` | Wikimedia Commons |
+| Kimberly-Clark | `kimberly-clark.svg` | Wikimedia Commons |
+| ConvaTec | `convatec.svg` | Wikimedia Commons |
+| Nipro | `nipro.svg` | Wikimedia Commons |
+| Medex | `medex.png` | connectamericas.com |
+| BMax | `bmax.png` | ecobmax.com (Wix) |
+| Sosega | `sosega.png` | sosega.com.co (Wix) |
+| Epson | `epson.svg` | jsDelivr / thesvg |
+| HP | `hp.svg` | Wikimedia Commons |
+| Faber-Castell | `faber-castell.png` | Wikimedia Commons |
+| Sharpie | `sharpie.svg` | Wikimedia Commons |
+| Gipao | `gipao.jpg` | i.ibb.co |
 
-| Marca | Por que |
-|---|---|
-| Medex | La URL de ConnectAmericas da 404. Ademas hay que confirmar de que Medex se trata: el sitio que se propuso era de Meditec, que no es la misma empresa. |
-| ConvaTec | La URL apuntaba a la pagina de la mediateca, no a un archivo. Hay que entrar y sacar el enlace directo. |
-| Berhlan · Elite · BMax · WypAll · Sosega · Workseg · Latexport · Steelpro · Epson · Gipao | Sin URL. Se piden al portal de socios de cada marca. |
+### Cuatro sin logotipo — fuera del riel
 
-**Cristalpisos no lleva logotipo**: es linea de producto de Berhlan — verificado,
-sus 19 referencias lo mencionan. **WypAll es de Kimberly-Clark**, que ya esta puesto.
+| Marca | Refs. | Por que |
+|---|---|---|
+| Rymco | 19 | La URL de ProColombia da 404 |
+| Latexport | 16 | La URL de su portafolio da 404 |
+| Workseg | 17 | Nunca hubo URL |
+| Steelpro | 11 | Nunca hubo URL |
 
-**Pendiente y sin resolver:** de cuales de estas marcas es Dispromed distribuidor
-autorizado. Publicar un logotipo afirma una relacion comercial.
+### Dos que revisar a ojo
+
+`bmax.png` y `gipao.jpg` **no tienen transparencia**. Si su fondo no es blanco
+puro, se vera un rectangulo en el riel. Se arregla pidiendo la version con
+fondo transparente al proveedor.
+
+`gipao.jpg` viene de un alojamiento de imagenes generico, no del sitio de la
+marca: conviene sustituirlo por el oficial cuando aparezca.
+
+### Peso
+
+BMax llegaba a 618 KB para mostrarse a 32 px. Wix acepta el tamano en la
+propia URL (`w_260,h_260`), asi que se pidio ya reducido: **48 KB**. No hizo
+falta instalar nada. La misma tecnica sirve para Sosega y cualquier otro Wix.
+
+**Pendiente y sin resolver:** de cuales de estas marcas es Dispromed
+distribuidor autorizado. Publicar un logotipo afirma una relacion comercial.
