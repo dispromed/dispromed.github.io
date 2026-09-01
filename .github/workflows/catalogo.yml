@@ -1,0 +1,87 @@
+# =============================================================================
+# catalogo.yml — valida y genera el catálogo a partir de data/catalogo.csv
+# =============================================================================
+#
+# Por qué existe
+# ---------------
+# La web nunca lee el CSV: sirve páginas ya generadas en catalogo/*.html.
+# Este workflow es la única puerta entre uno y otro. Si la validación falla,
+# el job termina sin escribir nada — el catálogo publicado en ese momento
+# (el del último commit que sí validó) sigue siendo lo que ve el visitante.
+# Ese fail-safe es el requisito central del diseño: viejo-y-correcto gana a
+# nuevo-y-roto.
+#
+# Este workflow NUNCA toca index.html — lo edita un humano. Si lo tocara,
+# el workflow `verificar-sitio` (que compara el sha256 del index.html de
+# cada commit contra el publicado) fallaría en rojo con todo bien.
+#
+# El commit del bot solo escribe catalogo/*.html, data/*.json y sitemap.xml,
+# que no están en los `paths` que disparan este workflow — por eso no se
+# re-dispara a sí mismo y no hay bucle de commits.
+# =============================================================================
+
+name: catalogo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/catalogo.csv"
+      - "scripts/**"
+      - ".github/workflows/catalogo.yml"
+  workflow_dispatch:
+    inputs:
+      forzar_truncamiento:
+        description: "Publicar aunque el CSV tenga más de un 30% menos de filas que la última generación exitosa"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: catalogo-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  catalogo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Auto-tests del validador
+        run: python3 scripts/test_validar_catalogo.py
+
+      - name: Validar data/catalogo.csv
+        id: validar
+        run: |
+          if [ "${{ inputs.forzar_truncamiento }}" = "true" ]; then
+            python3 scripts/validar_catalogo.py --forzar-truncamiento
+          else
+            python3 scripts/validar_catalogo.py
+          fi
+
+      - name: Generar catálogo
+        run: |
+          if [ "${{ inputs.forzar_truncamiento }}" = "true" ]; then
+            python3 scripts/generar_catalogo.py --forzar-truncamiento
+          else
+            python3 scripts/generar_catalogo.py
+          fi
+
+      - name: Commit y push si hay cambios
+        run: |
+          set -eu
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet -- catalogo data/indice.json data/resumen.json sitemap.xml; then
+            echo "Sin cambios en el catálogo generado — nada que commitear."
+            exit 0
+          fi
+
+          git add catalogo data/indice.json data/resumen.json sitemap.xml
+          git commit -m "chore(catalogo): regenerar desde data/catalogo.csv"
+          git push

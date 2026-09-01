@@ -18,12 +18,80 @@ index.html                 la página
 politica-de-datos.html     documento legal (PENDIENTE de redacción)
 404.html
 assets/css/main.css        todo el estilo
+assets/js/catalogo.js      progresivo: cifras reales + buscador del catálogo
 assets/img/                favicon y, más adelante, las fotos
+data/catalogo.csv          fuente del catálogo — únicos ficheros que edita Dispromed (ver "Catálogo" abajo)
+catalogo/                  GENERADO, no se edita a mano — catalogo/LEEME.md explica por qué
+scripts/                   el pipeline que valida y genera el catálogo
 robots.txt                 TEMPORAL: bloquea la indexación mientras no haya dominio propio
 .nojekyll                  Pages sirve los ficheros tal cual, sin procesarlos
 ```
 
 Tras cada `push`, el workflow **`verificar-sitio`** pide la página por HTTPS desde fuera y compara su huella con la del `index.html` de ese commit. Existe porque el fallo peligroso de Pages no es el ruidoso: es el despliegue que **termina en verde y no cambia lo que ve el usuario**. La consola informa de la intención; solo un `curl` desde fuera informa del resultado.
+
+---
+
+## Catálogo
+
+El catálogo público (`catalogo/*.html`) **no se edita a mano** y la web
+**nunca lee `data/catalogo.csv` directamente**. El único fichero que cambia
+un cliente o un asesor es `data/catalogo.csv`; todo lo demás lo genera CI.
+
+```
+data/catalogo.csv          la fuente — lo único que se edita a mano
+      ↓ push a main
+.github/workflows/catalogo.yml
+      ↓ valida (scripts/validar_catalogo.py)
+      │   si falla: el job termina aquí, no se genera nada,
+      │   el catálogo publicado sigue siendo el de antes
+      ↓ genera (scripts/generar_catalogo.py)
+catalogo/index.html, catalogo/<línea>.html,
+data/indice.json, data/resumen.json, sitemap.xml
+      ↓ el propio bot hace commit + push si algo cambió
+```
+
+**Por qué es así:** GitHub Pages publica lo que hay en `main` sin esperar a
+ningún workflow. Si la web leyera el CSV directamente, un CSV roto ya
+estaría publicado en el momento en que la validación se pusiera en rojo —
+el control llegaría tarde. Generando el artefacto en CI, un CSV roto nunca
+llega a convertirse en página: el `push` se queda validado-y-rechazado, y el
+catálogo anterior sigue siendo lo que ve el visitante.
+
+**index.html nunca lo toca el bot.** Si lo tocara, `verificar-sitio`
+(que compara el sha256 del `index.html` de cada commit contra el publicado)
+fallaría en rojo aunque todo estuviera bien. Las 5 tarjetas y los 5 enlaces
+del pie que apuntan a `catalogo/<línea>.html` se editan a mano si el nombre
+de un Grupo cambia — y el validador bloquea el `push` si detecta que un
+enlace de `index.html` quedó apuntando a un slug que ya no existe.
+
+**Qué bloquea la validación (el `push` no publica nada) y qué solo
+advierte** (se publica igual, queda avisado): ver los comentarios de
+`scripts/catalogo_common.py` y `scripts/validar_catalogo.py` — en resumen,
+bloquea lo que deja el sitio mal (enlace muerto, mojibake, una columna de
+precio/costo/margen — el CSV vive en un repo **público** —, una caída de más
+del 30% en el número de filas); advierte lo que solo lo deja incompleto
+(código duplicado, descripción larga).
+
+**Prerrequisito de configuración — no es código, hay que activarlo en
+Settings:** el workflow `catalogo` necesita permiso de escritura
+(`permissions: contents: write`, ya declarado en el YAML) para poder hacer
+el commit del catálogo regenerado. Si la organización tiene las
+*Workflow permissions* del repositorio en solo lectura, el paso de commit
+fallará con 403. Revisar en *Settings → Actions → General → Workflow
+permissions → Read and write permissions* antes de fiarse de que el
+pipeline completo funciona de punta a punta.
+
+Para probarlo en tu máquina, sin tocar nada en remoto:
+
+```
+python scripts/test_validar_catalogo.py   # el validador SÍ falla cuando debe
+python scripts/validar_catalogo.py
+python scripts/generar_catalogo.py
+python -m http.server 8000
+```
+
+Detalle de por qué cada fichero generado tiene la forma que tiene:
+`catalogo/LEEME.md`.
 
 ---
 

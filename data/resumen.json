@@ -1,0 +1,37 @@
+{
+  "total_productos": 2877,
+  "num_lineas": 5,
+  "num_sublineas": 24,
+  "lineas": [
+    {
+      "grupo": "Medicoquirúrgicos",
+      "slug": "medicoquirurgicos",
+      "productos": 1127,
+      "sublineas": 11
+    },
+    {
+      "grupo": "Aseo y cafetería",
+      "slug": "aseo-y-cafeteria",
+      "productos": 1037,
+      "sublineas": 7
+    },
+    {
+      "grupo": "Seguridad industrial",
+      "slug": "seguridad-industrial",
+      "productos": 375,
+      "sublineas": 4
+    },
+    {
+      "grupo": "Papelería",
+      "slug": "papeleria",
+      "productos": 337,
+      "sublineas": 1
+    },
+    {
+      "grupo": "Muebles y enseres",
+      "slug": "muebles-y-enseres",
+      "productos": 1,
+      "sublineas": 1
+    }
+  ]
+}

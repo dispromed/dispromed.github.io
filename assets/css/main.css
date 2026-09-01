@@ -374,3 +374,85 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
   .note-bar { padding: 18px 20px; }
   .note-bar .btn { width: 100%; }
 }
+
+/* =============================================================================
+   Catálogo — páginas generadas en catalogo/*.html + buscador de catalogo/index.html
+   Fuente: data/catalogo.csv, vía scripts/generar_catalogo.py. No se edita a
+   mano el resultado; se edita este bloque.
+   ============================================================================= */
+
+/* ---------- Buscador (catalogo/index.html) ---------- */
+.cat-search {
+  margin-top: 32px; max-width: 560px;
+}
+.cat-search label {
+  display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px;
+}
+.cat-search input[type="search"] {
+  width: 100%; font: inherit; font-size: 16px; padding: 14px 18px;
+  border: 1px solid var(--rule); border-radius: 12px; color: var(--body); background: var(--paper);
+}
+.cat-search input[type="search"]:focus-visible {
+  outline: 3px solid var(--blue-500); outline-offset: 1px; border-color: var(--blue-500);
+}
+.cat-search__resultados {
+  margin-top: 10px; max-height: 420px; overflow-y: auto;
+  border: 1px solid var(--rule); border-radius: 12px; background: var(--paper);
+}
+.cat-search__resultados:empty { display: none; }
+.cat-search__item {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 12px 16px; border-bottom: 1px solid var(--rule-2); text-decoration: none;
+}
+.cat-search__item:last-child { border-bottom: 0; }
+.cat-search__item:hover { background: var(--blue-50); }
+.cat-search__cod { font-family: var(--display); font-size: 12px; font-weight: 600; color: var(--blue-700); }
+.cat-search__desc { font-size: 15px; color: var(--body); }
+.cat-search__linea { font-size: 12px; color: var(--muted); }
+.cat-search__vacio { padding: 14px 16px; font-size: 14px; color: var(--muted); }
+.cat-search__mas {
+  display: block; width: 100%; padding: 12px 16px; border: 0; background: var(--paper-2);
+  color: var(--blue-700); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.cat-search__mas:hover { background: var(--blue-50); }
+
+/* ---------- Subgrupos (catalogo/<linea>.html) ---------- */
+.cat-grupo {
+  border: 1px solid var(--rule); border-radius: 14px; margin-top: 14px; overflow: hidden;
+}
+.cat-grupo summary {
+  cursor: pointer; list-style: none; padding: 16px 20px;
+  font-family: var(--display); font-size: 16px; font-weight: 600; color: var(--ink);
+  background: var(--paper-2);
+}
+.cat-grupo summary::-webkit-details-marker { display: none; }
+.cat-grupo summary::before {
+  content: "+"; display: inline-block; width: 18px; color: var(--blue-700); font-weight: 700;
+}
+.cat-grupo[open] summary::before { content: "–"; }
+.cat-grupo summary:focus-visible { outline: 3px solid var(--blue-500); outline-offset: -3px; }
+
+/* ---------- Tabla de productos ---------- */
+.cat-tabla-wrap { overflow-x: auto; }
+.cat-tabla { width: 100%; border-collapse: collapse; font-size: 14px; }
+.cat-tabla th {
+  text-align: left; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted); padding: 10px 20px; border-bottom: 1px solid var(--rule);
+}
+.cat-tabla td { padding: 10px 20px; border-bottom: 1px solid var(--rule-2); color: var(--body); vertical-align: top; }
+.cat-tabla tr:last-child td { border-bottom: 0; }
+.cat-tabla td:first-child { font-family: var(--display); font-size: 13px; color: var(--muted); white-space: nowrap; }
+.cat-tabla td:last-child { color: var(--muted); white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .cat-search { max-width: none; }
+  .cat-tabla td:last-child { display: none; }
+  /* .line__more se oculta en movil a los 767px (regla original, linea ~359)
+     porque en la home solo dice "Ver la linea ->", texto redundante en una
+     tarjeta que ya es un enlace. Las tarjetas de catalogo/index.html
+     reutilizan .line__more para un dato real (el conteo de productos), asi
+     que llevan TAMBIEN .line__count como marca -- esta regla, mas
+     especifica por combinar dos clases, gana sobre la original sin tocarla
+     ni duplicar el layout/color por variante que .line__more ya trae. */
+  .line__more.line__count { display: inline-flex; }
+}
