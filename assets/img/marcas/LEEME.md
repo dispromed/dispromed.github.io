@@ -120,3 +120,27 @@ falta instalar nada. La misma tecnica sirve para Sosega y cualquier otro Wix.
 
 **Pendiente y sin resolver:** de cuales de estas marcas es Dispromed
 distribuidor autorizado. Publicar un logotipo afirma una relacion comercial.
+
+
+## Revision visual del 2026-09-01 — tres logotipos retirados
+
+Se comprobo que los 14 se **servian** (200 OK, tipo correcto) y se dio por bueno.
+Servirse no es verse bien: al mirar la pagina, tres no parecian logotipos.
+
+| Marca | Que pasa | Que hace falta |
+|---|---|---|
+| **BMax** | El PNG trae **fondo amarillo incrustado** — esquina `(245,226,5)`. En gris queda una caja clara. `mix-blend-mode: multiply` no lo arregla: solo borra el blanco. | Version sobre fondo transparente. |
+| **Gipao** | Es el logotipo **en negativo**: blanco sobre fondo oscuro. Sobre blanco se ve como una cajita negra. | Version en positivo, o sobre transparente. |
+| **Sosega** | Sale como un bloque gris con una «S» recortada, no como un logo. | Archivo oficial del proveedor. |
+
+Los tres siguen en esta carpeta: para reponerlos basta con volver a listarlos en
+el riel de `index.html`. **No los borro** porque son marcas reales del catalogo
+—BMax es la tercera con mas referencias— y en cuanto llegue un archivo decente
+vuelven.
+
+**Medex** se queda, pero lleva la clase `is-faint`: es linea muy fina y clara, y
+con el tratamiento normal se perdia contra el blanco.
+
+**Epson** si es el wordmark, no el icono — la nota anterior estaba equivocada.
+Lo que pasa es que esta dibujado dentro de un lienzo cuadrado con mucho margen,
+asi que se lee mas pequeno que los demas. Lleva la clase `is-small`.

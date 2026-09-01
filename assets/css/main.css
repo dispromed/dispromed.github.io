@@ -212,7 +212,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 /* ---------- Marcas ---------- */
 .marquee-zone { position: relative; }
 .mq { overflow: hidden; }
-.mq-track { display: flex; align-items: center; gap: 66px; width: max-content; animation: mq 95s linear infinite; }
+.mq-track { display: flex; align-items: center; gap: 52px; width: max-content; animation: mq 78s linear infinite; }
 .mq-track--rev { animation-name: mqrev; animation-duration: 92s; }
 /* Cada casilla del riel admite indistintamente un logotipo o el nombre en
    texto. La altura fija es lo que hace que convivan sin desalinearse, y
@@ -222,7 +222,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
    que un wordmark 8:1 puesto a la misma altura, y parece un error. */
 .mq-item {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 168px; height: 60px; flex-shrink: 0;
+  width: 168px; height: 66px; flex-shrink: 0;
   font-family: var(--display); font-size: 23px; font-weight: 500;
   color: #5C7280; white-space: nowrap; letter-spacing: -.01em;
 }
@@ -232,11 +232,16 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
    fondo solido de los logos que llegaron sin transparencia (BMax, Gipao). */
 .mq-item img {
   max-height: 46px; max-width: 146px; width: auto; height: auto; object-fit: contain;
-  filter: grayscale(1); opacity: .58;
-  mix-blend-mode: multiply;
+  filter: grayscale(1); opacity: .72;
   transition: filter .2s ease, opacity .2s ease;
 }
 .mq-item img:hover { filter: grayscale(0); opacity: 1; }
+/* Logos de linea muy fina y clara: sin oscurecerlos se pierden contra el blanco. */
+.mq-item img.is-faint { filter: grayscale(1) brightness(.62) contrast(1.25); opacity: .85; }
+/* Logos dibujados dentro de un lienzo cuadrado con mucho margen: el trazo real
+   ocupa una fraccion de la casilla y se leen mas pequenos que los demas. */
+.mq-item img.is-small { max-height: 64px; max-width: 160px; }
+.mq-item img.is-faint:hover { filter: grayscale(0) brightness(1) contrast(1); opacity: 1; }
 @keyframes mq    { from { transform: translateX(0); }     to { transform: translateX(-50%); } }
 @keyframes mqrev { from { transform: translateX(-50%); }  to { transform: translateX(0); } }
 @media (prefers-reduced-motion: reduce) {
