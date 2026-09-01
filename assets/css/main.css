@@ -212,22 +212,28 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 /* ---------- Marcas ---------- */
 .marquee-zone { position: relative; }
 .mq { overflow: hidden; }
-.mq-track { display: flex; align-items: center; gap: 66px; width: max-content; animation: mq 78s linear infinite; }
+.mq-track { display: flex; align-items: center; gap: 66px; width: max-content; animation: mq 95s linear infinite; }
 .mq-track--rev { animation-name: mqrev; animation-duration: 92s; }
 /* Cada casilla del riel admite indistintamente un logotipo o el nombre en
    texto. La altura fija es lo que hace que convivan sin desalinearse, y
    permite ir sustituyendo texto por logotipo de uno en uno, sin rehacer nada. */
+/* Casilla de tamano fijo. Es lo que iguala opticamente logos cuadrados y
+   logotipos apaisados: sin ella, un logo 1:1 mide a lo ancho la quinta parte
+   que un wordmark 8:1 puesto a la misma altura, y parece un error. */
 .mq-item {
   display: inline-flex; align-items: center; justify-content: center;
-  height: 46px; flex-shrink: 0;
+  width: 168px; height: 60px; flex-shrink: 0;
   font-family: var(--display); font-size: 23px; font-weight: 500;
   color: #5C7280; white-space: nowrap; letter-spacing: -.01em;
 }
-/* Limitar SOLO la altura no basta: un logotipo muy apaisado —Kimberly-Clark
-   va a 8:1— se comeria el riel entero. El tope de ancho lo normaliza. */
+/* Dos topes, no uno: el de altura manda en los cuadrados, el de ancho en los
+   apaisados. Asi ninguno domina el riel ni desaparece.
+   `mix-blend-mode: multiply` sobre el blanco de la seccion hace desaparecer el
+   fondo solido de los logos que llegaron sin transparencia (BMax, Gipao). */
 .mq-item img {
-  max-height: 32px; max-width: 150px; width: auto; height: auto; object-fit: contain;
-  filter: grayscale(1); opacity: .55;
+  max-height: 46px; max-width: 146px; width: auto; height: auto; object-fit: contain;
+  filter: grayscale(1); opacity: .58;
+  mix-blend-mode: multiply;
   transition: filter .2s ease, opacity .2s ease;
 }
 .mq-item img:hover { filter: grayscale(0); opacity: 1; }
@@ -349,7 +355,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 
   .sectors { grid-template-columns: 1fr; gap: 20px; }
   .mq-fade { width: 56px; }
-  .mq-track { gap: 40px; animation-duration: 58s; }
+  .mq-track { gap: 30px; animation-duration: 70s; }
   .mq-track--rev { animation-duration: 68s; }
   .mq-item { font-size: 19px; }
 
