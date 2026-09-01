@@ -34,15 +34,15 @@ Las que no se puedan declarar, se quedan en texto o salen del riel.
 
 | Marca | Archivo | Autorizado? |
 |---|---|---|
-| 3M | `3m.svg` | por confirmar |
+| 3M | `3m.svg` **descargado** | por confirmar |
 | Johnson & Johnson | `johnson-johnson.svg` | por confirmar |
 | BD | `bd.svg` | por confirmar |
-| Kimberly-Clark | `kimberly-clark.svg` | por confirmar |
+| Kimberly-Clark | `kimberly-clark.svg` **descargado** | por confirmar |
 | ConvaTec | `convatec.svg` | por confirmar |
 | BSN Medical | `bsn-medical.svg` | por confirmar |
 | Baxter | `baxter.svg` | por confirmar |
 | B. Braun | `b-braun.svg` | por confirmar |
-| Nipro | `nipro.svg` | por confirmar |
+| Nipro | `nipro.svg` **descargado** | por confirmar |
 | Smith+Nephew | `smith-nephew.svg` | por confirmar |
 | Welch Allyn | `welch-allyn.svg` | por confirmar |
 | Corpaul | `corpaul.svg` | por confirmar |
@@ -61,12 +61,35 @@ Las que no se puedan declarar, se quedan en texto o salen del riel.
 | Arseg | `arseg.svg` | por confirmar |
 | Workseg | `workseg.svg` | por confirmar |
 | Berhlan | `berhlan.svg` | por confirmar |
-| Faber-Castell | `faber-castell.svg` | por confirmar |
+| Faber-Castell | `faber-castell.png` **descargado** | por confirmar |
 | BIC | `bic.svg` | por confirmar |
 | Pelikan | `pelikan.svg` | por confirmar |
-| Sharpie | `sharpie.svg` | por confirmar |
+| Sharpie | `sharpie.svg` **descargado** | por confirmar |
 | Epson | `epson.svg` | por confirmar |
 | Norma | `norma.svg` | por confirmar |
 
 Si solo hay PNG, que sea a `@2x` (unos 68 px de alto reales) y con fondo
 transparente. El riel los sirve a 34 px.
+
+
+## Estado al 2026-08-31
+
+**Seis en el riel:** 3M · Kimberly-Clark · Nipro · HP · Sharpie · Faber-Castell.
+Origen: Wikimedia Commons, salvo indicacion contraria. Los cinco SVG se revisaron
+antes de subirlos: sin `<script>`, sin referencias externas, sin rasters incrustados.
+A 3M y Sharpie hubo que anadirles `viewBox` — sin el, un `<img>` no escala igual
+en todos los navegadores.
+
+**Sin conseguir todavia:**
+
+| Marca | Por que |
+|---|---|
+| Medex | La URL de ConnectAmericas da 404. Ademas hay que confirmar de que Medex se trata: el sitio que se propuso era de Meditec, que no es la misma empresa. |
+| ConvaTec | La URL apuntaba a la pagina de la mediateca, no a un archivo. Hay que entrar y sacar el enlace directo. |
+| Berhlan · Elite · BMax · WypAll · Sosega · Workseg · Latexport · Steelpro · Epson · Gipao | Sin URL. Se piden al portal de socios de cada marca. |
+
+**Cristalpisos no lleva logotipo**: es linea de producto de Berhlan — verificado,
+sus 19 referencias lo mencionan. **WypAll es de Kimberly-Clark**, que ya esta puesto.
+
+**Pendiente y sin resolver:** de cuales de estas marcas es Dispromed distribuidor
+autorizado. Publicar un logotipo afirma una relacion comercial.
