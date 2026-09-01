@@ -132,7 +132,7 @@
     }
 
     function urlProducto(item) {
-      return 'catalogo/' + slugify(item.grupo) + '.html#' + slugify(item.subgrupo);
+      return '/catalogo/' + slugify(item.grupo) + '.html#' + slugify(item.subgrupo);
     }
 
     function renderizarPagina() {
@@ -232,13 +232,34 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      rellenarCifrasHome();
-      iniciarBusqueda();
-    });
-  } else {
+  // Al llegar a catalogo/<linea>.html#<ancla> (por ejemplo desde un
+  // resultado de busqueda), el navegador solo hace scroll hasta el
+  // <details> -- si esta cerrado (lineas de mas de 25 filas: todas menos
+  // Muebles y enseres), el contenido de esa sublinea queda invisible sin
+  // que nada lo avise. Forzar `.open = true` es lo que falta.
+  function abrirDetallesDesdeAncla() {
+    var id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el || el.tagName !== 'DETAILS') return;
+    if (!el.open) {
+      el.open = true;
+      // El navegador ya intento desplazarse con el <details> cerrado (otra
+      // altura); una vez abierto, se reencuadra para que quede a la vista.
+      el.scrollIntoView({ block: 'start' });
+    }
+  }
+
+  function iniciar() {
     rellenarCifrasHome();
     iniciarBusqueda();
+    abrirDetallesDesdeAncla();
+    window.addEventListener('hashchange', abrirDetallesDesdeAncla);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar);
+  } else {
+    iniciar();
   }
 })();

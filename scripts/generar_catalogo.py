@@ -263,7 +263,7 @@ def _render_pagina_linea(linea: Linea) -> str:
             titulo=f"{linea.nombre_display} — Catálogo Dispromed",
             descripcion=descripcion_meta,
             ruta_canonica=f"catalogo/{linea.slug}.html",
-            incluir_script=False,
+            incluir_script=True,  # abre el <details> de la sublinea si la URL trae #ancla
         )
         + _cabecera("‹ Todo el catálogo", "index.html")
         + f"""

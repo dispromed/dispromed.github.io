@@ -90,6 +90,27 @@ python scripts/generar_catalogo.py
 python -m http.server 8000
 ```
 
+**Test de humo del buscador (Playwright):** un resultado de búsqueda que se
+ve bien pintado no prueba que el enlace navegue a alguna parte — un bug real
+en producción (prefijo relativo en vez de absoluto en la URL construida por
+`assets/js/catalogo.js`, `/catalogo/catalogo/...` → 404) se coló así, con
+capturas correctas y cero errores de consola. `scripts/smoke_test_busqueda_enlaces.js`
+hace clic de verdad en el primer resultado de una búsqueda en cada una de las
+5 líneas, y comprueba que la página de destino responde 200 (no 404) y que el
+`<details>` de esa sublínea queda abierto y visible — no solo que el enlace
+se pinte. Levanta su propio servidor local, no hace falta arrancar nada a
+mano:
+
+```
+node scripts/smoke_test_busqueda_enlaces.js
+```
+
+Requiere Playwright + Chromium ya instalados en otro sitio de esta máquina
+(este repo sigue siendo cero-build/cero-npm; Playwright no se instala aquí).
+Rutas configurables con las variables de entorno `PLAYWRIGHT_MODULE`,
+`CHROMIUM_EXE` y `PYTHON_EXE` si hace falta apuntar a otra instalación —ver
+los valores por defecto al principio del script.
+
 Detalle de por qué cada fichero generado tiene la forma que tiene:
 `catalogo/LEEME.md`.
 
