@@ -30,6 +30,18 @@
     return texto.normalize('NFKD').replace(RANGO_DIACRITICOS, '').toLowerCase();
   }
 
+  // Mismo algoritmo que scripts/catalogo_common.py::formatear_miles — no usa
+  // toLocaleString()/Intl.NumberFormat porque ese separador depende del
+  // locale configurado en el navegador del visitante (no siempre es-CO); el
+  // resto del sitio ya usa el punto de miles colombiano como literal fijo.
+  function formatearMiles(numero) {
+    var texto = String(Math.trunc(numero));
+    var negativo = texto.charAt(0) === '-';
+    if (negativo) texto = texto.slice(1);
+    var conPuntos = texto.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return negativo ? '-' + conPuntos : conPuntos;
+  }
+
   // Mismo algoritmo que scripts/catalogo_common.py::slugify — grupo/subgrupo
   // ya vienen con tilde y mayúscula inicial desde data/indice.json, pero
   // slugify() descarta acentos y mayúsculas por igual, así que el slug que
@@ -67,6 +79,8 @@
             nodo.textContent = resumen.num_lineas;
           } else if (clave === 'sublineas' && typeof resumen.num_sublineas === 'number') {
             nodo.textContent = resumen.num_sublineas;
+          } else if (clave === 'referencias' && typeof resumen.total_productos === 'number') {
+            nodo.textContent = formatearMiles(resumen.total_productos);
           }
         });
       })
@@ -74,6 +88,66 @@
         // Sin conexión o sin data/resumen.json: se queda el literal escrito
         // a mano en index.html. No es un error del usuario, no se le informa.
       });
+  }
+
+  // La fecha de fundación vive UNA sola vez, declarada en el propio HTML
+  // (data-desde="2003-09-01" en el nodo data-stat="anios") — el JS no la
+  // repite como constante aparte.
+  //
+  // "Hoy" se ancla explícitamente a America/Bogota vía Intl con el parámetro
+  // timeZone, en vez de restar milisegundos o leer new Date().getFullYear()
+  // (que usa la zona horaria LOCAL del dispositivo del visitante). Sin este
+  // anclaje, alguien viendo el sitio desde Asia el 31 de agosto por la tarde
+  // -hora de Colombia- ya estaria en 1 de septiembre en su reloj local y
+  // veria un año de más.
+  function fechaBogotaHoy(instante) {
+    var formateador = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Bogota',
+      year: 'numeric', month: '2-digit', day: '2-digit'
+    });
+    var partes = {};
+    formateador.formatToParts(instante || new Date()).forEach(function (parte) {
+      partes[parte.type] = parte.value;
+    });
+    return {
+      anio: parseInt(partes.year, 10),
+      mes: parseInt(partes.month, 10),
+      dia: parseInt(partes.day, 10)
+    };
+  }
+
+  // Años cumplidos entre `desdeISO` (YYYY-MM-DD) y `hoy` ({anio,mes,dia}),
+  // comparando componentes de calendario -- no aritmética de milisegundos,
+  // que arrastra el huso horario del objeto Date de vuelta al cálculo.
+  // El aniversario cuenta el mismo día: 2027-09-01 ya son 24, no hace falta
+  // esperar al 2.
+  function aniosDesde(desdeISO, hoy) {
+    var partes = desdeISO.split('-');
+    var anioFundacion = parseInt(partes[0], 10);
+    var mesFundacion = parseInt(partes[1], 10);
+    var diaFundacion = parseInt(partes[2], 10);
+
+    var anios = hoy.anio - anioFundacion;
+    var aunNoLlegaElAniversarioEsteAnio =
+      hoy.mes < mesFundacion ||
+      (hoy.mes === mesFundacion && hoy.dia < diaFundacion);
+    if (aunNoLlegaElAniversarioEsteAnio) {
+      anios -= 1;
+    }
+    return anios;
+  }
+
+  function calcularAniosFundacion() {
+    var nodo = document.querySelector('[data-stat="anios"]');
+    if (!nodo) return;
+    var desde = nodo.getAttribute('data-desde');
+    if (!desde) return;
+    try {
+      nodo.textContent = aniosDesde(desde, fechaBogotaHoy());
+    } catch (e) {
+      // Intl.DateTimeFormat con timeZone no disponible (navegador muy
+      // antiguo): se queda el literal escrito a mano en index.html.
+    }
   }
 
   // data/indice.json llega como diccionario ANIDADO grupo -> sublínea ->
@@ -252,14 +326,30 @@
 
   function iniciar() {
     rellenarCifrasHome();
+    calcularAniosFundacion();
     iniciarBusqueda();
     abrirDetallesDesdeAncla();
     window.addEventListener('hashchange', abrirDetallesDesdeAncla);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', iniciar);
-  } else {
-    iniciar();
+  // Guard: este mismo fichero se importa desde Node (scripts/test_calculo_anios.js)
+  // para probar aniosDesde()/fechaBogotaHoy()/formatearMiles() SIN reimplementarlas
+  // -- un test que copia la lógica en vez de ejecutar la real nunca detecta un bug
+  // en esa lógica. `document` no existe en Node, así que el arranque de DOM se
+  // salta por completo ahí; en el navegador esta condición es siempre verdadera.
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', iniciar);
+    } else {
+      iniciar();
+    }
+  }
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      formatearMiles: formatearMiles,
+      fechaBogotaHoy: fechaBogotaHoy,
+      aniosDesde: aniosDesde
+    };
   }
 })();
