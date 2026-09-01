@@ -258,9 +258,41 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 .site-footer p { font-size: 14px; line-height: 1.7; margin: 16px 0 0; }
 .site-footer__legal {
   border-top: 1px solid #1D3A48; margin-top: 40px; padding-top: 20px;
-  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap;
   font-size: 13px; color: #7A94A2;
 }
+.site-footer__legal > span:nth-of-type(2) { margin-right: auto; }
+.powered {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; color: #7A94A2;
+  padding: 6px 12px 6px 6px; border-radius: 999px;
+  border: 1px solid #1D3A48; background: rgba(255,255,255,.03);
+  transition: border-color .15s ease, color .15s ease;
+}
+.powered img { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; }
+.powered strong { font-weight: 600; color: #C9DCE5; }
+.powered:hover { border-color: #7F77DD; color: #C9DCE5; }
+.powered:hover strong { color: #fff; }
+
+/* ---------- Documento largo (legal) ---------- */
+.doc { max-width: 780px; padding-top: 72px; padding-bottom: 88px; }
+.doc h1 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.15; color: var(--ink); margin: 14px 0 0; }
+.doc h2 { font-family: var(--text); font-size: 19px; font-weight: 600; letter-spacing: 0; color: var(--ink); margin: 40px 0 0; }
+.doc h3 { font-family: var(--text); font-size: 16px; font-weight: 600; letter-spacing: 0; color: var(--ink); margin: 26px 0 0; }
+.doc p, .doc li { font-size: 16px; line-height: 1.75; color: var(--muted); }
+.doc p { margin: 12px 0 0; }
+.doc ul, .doc ol { margin: 12px 0 0; padding-left: 22px; }
+.doc li { margin-top: 8px; }
+.doc strong { color: var(--body); font-weight: 600; }
+.doc__meta { font-size: 14px; color: var(--faint); margin-top: 10px; }
+.doc__aviso {
+  background: #FFF4E0; border-radius: 12px; padding: 18px 20px; margin-top: 28px;
+}
+.doc__aviso p { color: #6B4400; font-size: 15px; margin: 0; }
+.doc__aviso p + p { margin-top: 10px; }
+.doc__aviso strong { color: #6B4400; }
+.doc__pend { background: var(--blue-50); border-left: 3px solid var(--blue-500); padding: 2px 14px; margin-top: 14px; }
+.doc__pend p { font-size: 15px; }
 
 /* =============================================================================
    Adaptable
