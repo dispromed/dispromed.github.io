@@ -1,0 +1,109 @@
+# =============================================================================
+# verificar-sitio.yml — comprueba DESDE FUERA que lo publicado es este commit
+# =============================================================================
+#
+# Por qué existe
+# -------------
+# GitHub Pages publica solo, sin workflow nuestro. El riesgo no es que falle
+# ruidosamente: es que TERMINE EN VERDE Y NO SIRVA LA PÁGINA — un despliegue que
+# aplica limpio y nunca cambia lo que ve el usuario. Consultar la consola no lo
+# detecta, porque la consola informa de la intención, no del resultado.
+#
+# Este control hace lo único que sí lo prueba: pedir la página por HTTPS desde
+# fuera y comparar su huella con la del fichero de este commit. Si no coinciden,
+# el despliegue no ha llegado — o llegó otro.
+#
+# La parity byte a byte es fiable porque el repositorio tiene `.nojekyll`:
+# Pages sirve los ficheros tal cual, sin procesarlos.
+#
+# El destino sale del fichero CNAME si existe, y si no del dominio de GitHub.
+# Así el día que se active el dominio propio este control lo sigue sin editarlo.
+# =============================================================================
+
+name: verificar-sitio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolver el destino
+        id: destino
+        run: |
+          if [ -f CNAME ]; then
+            HOST="$(tr -d '[:space:]' < CNAME)"
+          else
+            HOST="dispromed.github.io"
+          fi
+          echo "host=$HOST" >> "$GITHUB_OUTPUT"
+          echo "Verificando contra https://$HOST/"
+
+      - name: Huella esperada
+        id: esperada
+        run: |
+          SHA="$(sha256sum index.html | cut -d' ' -f1)"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "index.html de este commit: $SHA"
+
+      - name: Esperar a que lo publicado sea este commit
+        env:
+          HOST: ${{ steps.destino.outputs.host }}
+          ESPERADA: ${{ steps.esperada.outputs.sha }}
+        run: |
+          set -u
+          for i in $(seq 1 40); do
+            CODE="$(curl -s -o /tmp/live.html -w '%{http_code}' --max-time 20 "https://$HOST/" || echo 000)"
+            VIVA="$(sha256sum /tmp/live.html | cut -d' ' -f1)"
+            echo "intento $i · http=$CODE · viva=$VIVA"
+            if [ "$CODE" = "200" ] && [ "$VIVA" = "$ESPERADA" ]; then
+              echo "OK — lo publicado es este commit."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::Tras 10 minutos, https://$HOST/ no sirve el index.html de este commit."
+          echo "Esperada: $ESPERADA"
+          echo "Recibida: $(sha256sum /tmp/live.html | cut -d' ' -f1)"
+          exit 1
+
+      - name: Comprobaciones mínimas de la página viva
+        env:
+          HOST: ${{ steps.destino.outputs.host }}
+        run: |
+          set -eu
+          fallo=0
+
+          # El certificado tiene que ser válido: sin -k, curl falla si no lo es.
+          curl -sSf --max-time 20 -o /dev/null "https://$HOST/" || { echo "::error::TLS o HTTPS no responden"; fallo=1; }
+
+          # La página no puede quedarse sin su hoja de estilo.
+          curl -sSf --max-time 20 -o /dev/null "https://$HOST/assets/css/main.css" || { echo "::error::main.css no se sirve"; fallo=1; }
+
+          # Un marcador de contenido: si esto falta, se publicó otra cosa.
+          grep -q "Todo lo que tu operación necesita" /tmp/live.html || { echo "::error::El titular no aparece en la página viva"; fallo=1; }
+
+          exit $fallo
+
+      - name: Recordatorio de go-live
+        if: success()
+        env:
+          HOST: ${{ steps.destino.outputs.host }}
+        run: |
+          if [ -f robots.txt ] && grep -q "Disallow: /" robots.txt; then
+            echo "::warning::robots.txt sigue bloqueando la indexación. Quitarlo el día del go-live (ver README)."
+          fi
+          if grep -q "\[FOTO REAL DE DISPROMED\|\[TELÉFONO\]\|\[NIT\]\|\[AÑOS\]" index.html; then
+            echo "::warning::La página aún tiene marcadores entre corchetes sin rellenar."
+          fi
+          echo "Verificado: https://$HOST/"

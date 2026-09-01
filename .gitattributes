@@ -1,0 +1,9 @@
+# Fin de linea LF siempre.
+# No es cosmetico: `verificar-sitio` compara el sha256 del index.html del commit
+# contra el que sirve GitHub. Si el fichero viaja con CRLF en una maquina y con
+# LF en otra, las huellas no coinciden y el control falla sin que nada este mal.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.pdf binary
