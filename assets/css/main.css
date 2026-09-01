@@ -457,3 +457,188 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
      ni duplicar el layout/color por variante que .line__more ya trae. */
   .line__more.line__count { display: inline-flex; }
 }
+
+/* =============================================================================
+   Movimiento — el scroll no dispara, MANDA
+   =============================================================================
+   La diferencia con una animación normal es que aquí el navegador liga el
+   fotograma a la posición de la rueda, no al reloj: si el visitante sube, la
+   animación retrocede con él. Eso es `animation-timeline: view()`, CSS puro,
+   cero librerías y cero JavaScript de animación.
+
+   Dos reglas de seguridad gobiernan este bloque entero:
+
+   1. Donde el navegador SÍ sabe ligar animación y scroll, quien esconde y
+      quien revela es la misma regla CSS. Si assets/js/efectos.js no llega a
+      cargar, el contenido se ve igual — no hay estado "escondido para
+      siempre".
+   2. Donde NO sabe (Safari anterior al 26, Firefox), el escondido depende de
+      `html.js`, una clase que pone el propio efectos.js en su primera línea.
+      Sin JS no hay clase, sin clase no hay escondido, y la página se ve como
+      hoy. El fail-soft nunca puede dejar contenido invisible.
+
+   `prefers-reduced-motion` apaga el bloque completo, no una parte.
+   ============================================================================= */
+
+/* ---------- Titulares que se encienden palabra por palabra ----------
+   Los <span class="w"> los crea efectos.js en el navegador. En el HTML
+   servido el titular sigue siendo una frase contigua — que es lo que exige
+   el control de contenido de .github/workflows/verificar-sitio.yml. */
+.w { display: inline-block; }
+
+@supports (animation-timeline: view()) {
+  /* --i lo pone efectos.js: es el índice de la palabra, y es lo único que
+     escalona el encendido. Sin él las palabras se encenderían a la vez. */
+  .w {
+    opacity: .13; filter: blur(7px); transform: translateY(.18em);
+    animation: encender linear both;
+    animation-timeline: view();
+    animation-range: cover calc(17% + var(--i) * .9%) cover calc(43% + var(--i) * .9%);
+  }
+
+  /* Tarjetas y bloques: suben y entran en foco mientras cruzan la pantalla. */
+  [data-anima] {
+    animation: subir linear both;
+    animation-timeline: view();
+    animation-range: entry 4% cover 30%;
+  }
+
+  /* El banner se retira en vez de irse: el contenido se aleja y el glifo
+     gira despacio mientras la portada sale por arriba. */
+  .hero__inner { animation: retirar linear both; animation-timeline: view(); animation-range: exit 0% exit 88%; }
+  .hero__mark  { animation: girar   linear both; animation-timeline: view(); animation-range: cover 0% cover 100%; }
+
+  /* Lo que ya viaja dentro de .hero__inner no debe animarse dos veces. */
+  .hero__inner [data-anima] { animation: none; opacity: 1; transform: none; }
+}
+
+/* Sin scroll timelines: mismo lenguaje, disparado al entrar en pantalla.
+   El escondido cuelga de html.js — ver la regla 2 de la cabecera. */
+@supports not (animation-timeline: view()) {
+  .js .w {
+    opacity: .13; filter: blur(7px); transform: translateY(.18em);
+    transition: opacity .8s cubic-bezier(.22,1,.36,1),
+                filter  .8s cubic-bezier(.22,1,.36,1),
+                transform .8s cubic-bezier(.22,1,.36,1);
+  }
+  .js .w.is-lit { opacity: 1; filter: blur(0); transform: none; }
+
+  .js [data-anima] {
+    opacity: 0; transform: translateY(28px) scale(.972);
+    transition: opacity .85s cubic-bezier(.22,1,.36,1),
+                transform .85s cubic-bezier(.22,1,.36,1);
+  }
+  .js [data-anima].is-in { opacity: 1; transform: none; }
+}
+
+@keyframes encender { to   { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes subir    { from { opacity: 0; transform: translateY(30px) scale(.972); }
+                      to   { opacity: 1; transform: none; } }
+@keyframes retirar  { from { opacity: 1; transform: none; }
+                      to   { opacity: 0; transform: translateY(-48px) scale(.975); } }
+@keyframes girar    { from { transform: scale(1)    rotate(0deg);  }
+                      to   { transform: scale(1.24) rotate(16deg); } }
+
+/* ---------- Banner: malla en deriva y grano ----------
+   El grano es lo que separa "plano" de "material" sin tocar un solo color:
+   es ruido en blanco y negro al 6%, no un tinte. */
+.hero__mesh {
+  position: absolute; inset: -25%; pointer-events: none; filter: blur(30px);
+  background:
+    radial-gradient(38% 46% at 22% 26%, rgba(18,165,220,.60), transparent 62%),
+    radial-gradient(34% 40% at 80% 16%, rgba(143,215,242,.34), transparent 64%),
+    radial-gradient(46% 52% at 64% 90%, rgba(10,110,158,.68), transparent 62%);
+  animation: derivar 34s ease-in-out infinite alternate;
+}
+@keyframes derivar {
+  from { transform: translate3d(-2%,-1%,0) scale(1); }
+  to   { transform: translate3d(3%,2%,0)   scale(1.09); }
+}
+.hero__grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: .06;
+  background-size: 170px 170px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Cabecera que se contrae al despegar del banner ---------- */
+.site-header { transition: background-color .28s ease, box-shadow .28s ease, border-color .28s ease; }
+.site-header__inner { transition: min-height .28s cubic-bezier(.22,1,.36,1); }
+.logo { transition: height .28s cubic-bezier(.22,1,.36,1); }
+.site-header.is-stuck {
+  background: rgba(255,255,255,.86);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-bottom-color: transparent;
+  box-shadow: 0 10px 30px -18px rgba(7,58,84,.55);
+}
+.site-header.is-stuck .site-header__inner { min-height: 60px; }
+.site-header.is-stuck .logo { height: 38px; }
+
+/* ---------- Las cinco líneas: foco que sigue al cursor ----------
+   El gesto es lento a propósito (.55s): un hover rápido se lee como reflejo,
+   uno lento se lee como material. El tinte del foco cambia por variante
+   porque un blanco al 34% sobre .line--pale (que ya es casi blanco) no se
+   vería, y sobre .line--ink sería un fogonazo. */
+.line { transition: transform .55s cubic-bezier(.22,1,.36,1), box-shadow .55s cubic-bezier(.22,1,.36,1); }
+.line:hover { transform: translateY(-10px) scale(1.014); box-shadow: 0 34px 60px -28px rgba(7,58,84,.6); }
+.line::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  opacity: 0; transition: opacity .3s ease;
+  background: radial-gradient(340px circle at var(--mx,50%) var(--my,50%), var(--foco, rgba(255,255,255,.22)), transparent 62%);
+}
+.line:hover::after { opacity: 1; }
+.line__name, .line__more { z-index: 2; }
+.line--brand { --foco: rgba(255,255,255,.34); }
+.line--ink   { --foco: rgba(143,215,242,.20); }
+.line--mid   { --foco: rgba(255,255,255,.20); }
+.line--pale  { --foco: rgba(255,255,255,.80); }
+.line--soft  { --foco: rgba(18,165,220,.16); }
+
+/* ---------- Sectores: de ocho cajas iguales a una retícula con ritmo ----------
+   Ocho piezas en cuatro columnas con dos anchas arriba, cuatro compactas en
+   medio y dos anchas abajo suman doce celdas exactas: tres filas llenas, sin
+   hueco al final. Es lo que quita el aire de plantilla. */
+.sectors { gap: 18px; }
+.sector {
+  background: var(--paper); border: 1px solid var(--rule);
+  border-top: 3px solid var(--blue-500); border-radius: 16px;
+  padding: 20px 22px 24px;
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s cubic-bezier(.22,1,.36,1);
+}
+.sector:hover { transform: translateY(-7px); box-shadow: 0 28px 52px -28px rgba(7,58,84,.5); }
+.sector--ancho { grid-column: span 2; }
+.sector--ancho h3 { font-size: 22px; line-height: 1.25; }
+.sector--ancho p { font-size: 15px; }
+.sector--acento { background: var(--blue-50); border-color: #BFE4F5; border-top-color: var(--blue-500); }
+
+/* ---------- El riel se detiene donde el ojo se detiene ---------- */
+.marquee-zone:hover .mq-track { animation-play-state: paused; }
+.mq-item img { transition: filter .25s ease, opacity .25s ease, transform .25s cubic-bezier(.22,1,.36,1); }
+.mq-item img:hover { transform: scale(1.09); }
+
+/* ---------- El menú sabe en qué sección estás ---------- */
+.nav a { position: relative; padding-bottom: 5px; }
+.nav a::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: 0;
+  height: 2px; border-radius: 2px; background: var(--blue-500);
+  transition: right .32s cubic-bezier(.22,1,.36,1);
+}
+.nav a:hover::after, .nav a.is-active::after { right: 0; }
+.nav a.is-active { color: var(--blue-700); }
+
+@media (max-width: 1023px) {
+  /* En el menú desplegable cada enlace es una fila con su propia raya
+     inferior; el subrayado de sección se pisaría con ella. */
+  .nav a::after { display: none; }
+}
+
+@media (max-width: 767px) {
+  /* A una columna, `span 2` inventaría una segunda columna vacía. */
+  .sector--ancho { grid-column: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w, .js .w { opacity: 1; filter: none; transform: none; animation: none; transition: none; }
+  [data-anima], .js [data-anima] { opacity: 1; transform: none; animation: none; transition: none; }
+  .hero__inner, .hero__mark, .hero__mesh { animation: none; }
+  .line:hover, .sector:hover { transform: none; }
+}

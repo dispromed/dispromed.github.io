@@ -22,8 +22,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=11">
+<link rel="stylesheet" href="assets/css/main.css?v=12">
 <script defer src="assets/js/catalogo.js?v=1"></script>
+<script defer src="assets/js/efectos.js?v=1"></script>
 </head>
 <body>
 
@@ -80,13 +81,15 @@
 <!-- ============================ BANNER ============================ -->
 <section class="hero">
   <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__mesh" aria-hidden="true"></div>
   <svg class="hero__mark" aria-hidden="true" style="color:#fff"><use href="#ciclo"/></svg>
   <div class="hero__veil" aria-hidden="true"></div>
+  <div class="hero__grain" aria-hidden="true"></div>
 
   <div class="wrap hero__inner">
-    <h1>Todo lo que tu operación necesita, en un solo techo.</h1>
-    <p>5 líneas, miles de productos y un asesor que te puede orientar en todo lo que necesitas.</p>
-    <div class="hero__cta">
+    <h1 data-anima data-palabras>Todo lo que tu operación necesita, en un solo techo.</h1>
+    <p data-anima>5 líneas, miles de productos y un asesor que te puede orientar en todo lo que necesitas.</p>
+    <div class="hero__cta" data-anima>
       <a class="btn btn--brand btn--lg" href="https://app.holaeli.app" target="_blank" rel="noopener">Entrar al portal de pedidos</a>
       <a class="btn btn--ghost-light btn--lg" href="#lineas">Recorrer el catálogo</a>
     </div>
@@ -96,54 +99,54 @@
 <!-- ============================ CIFRAS ============================ -->
 <section class="stats" id="nosotros" aria-label="Dispromed en cifras">
   <div class="wrap stats__grid">
-    <div><div class="stat__n" data-stat="anios" data-desde="2003-09-01">23</div><div class="stat__l">años abasteciendo instituciones</div></div>
-    <div><div class="stat__n" data-stat="lineas">5</div><div class="stat__l">líneas de suministro</div></div>
-    <div><div class="stat__n" data-stat="sublineas">24</div><div class="stat__l">sublíneas surtidas</div></div>
-    <div><div class="stat__n" data-stat="referencias">2.877</div><div class="stat__l">referencias en catálogo</div></div>
+    <div data-anima><div class="stat__n" data-stat="anios" data-desde="2003-09-01">23</div><div class="stat__l">años abasteciendo instituciones</div></div>
+    <div data-anima><div class="stat__n" data-stat="lineas">5</div><div class="stat__l">líneas de suministro</div></div>
+    <div data-anima><div class="stat__n" data-stat="sublineas">24</div><div class="stat__l">sublíneas surtidas</div></div>
+    <div data-anima><div class="stat__n" data-stat="referencias">2.877</div><div class="stat__l">referencias en catálogo</div></div>
   </div>
 </section>
 
 <!-- ============================ LÍNEAS ============================ -->
 <section class="section section--tight" id="lineas">
   <div class="wrap">
-    <div class="section__head">
+    <div class="section__head" data-anima>
       <p class="eyebrow">Nuestras líneas</p>
-      <h2>Te consolidamos en un único portal, lo que normalmente buscarías en decenas de proveedores.</h2>
+      <h2 data-palabras>Te consolidamos en un único portal, lo que normalmente buscarías en decenas de proveedores.</h2>
     </div>
 
     <div class="lines">
-      <a class="line line--brand line--wide" href="catalogo/medicoquirurgicos.html">
+      <a class="line line--brand line--wide" href="catalogo/medicoquirurgicos.html" data-anima>
         <svg class="line__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="8" width="19" height="8" rx="4"/><path d="M12 8v8"/></svg>
         <span class="line__name">Medicoquirúrgicos</span>
         <span class="line__more">Ver la línea <svg aria-hidden="true"><use href="#flecha"/></svg></span>
       </a>
 
-      <a class="line line--ink" href="catalogo/aseo-y-cafeteria.html">
+      <a class="line line--ink" href="catalogo/aseo-y-cafeteria.html" data-anima>
         <svg class="line__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 9h6v11a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z"/><path d="M10 9V6h4v3"/><path d="M14 5h3l2-2"/><path d="M11 13h2"/></svg>
         <span class="line__name">Aseo y cafetería</span>
         <span class="line__more">Ver la línea <svg aria-hidden="true"><use href="#flecha"/></svg></span>
       </a>
 
-      <a class="line line--pale" href="catalogo/seguridad-industrial.html">
+      <a class="line line--pale" href="catalogo/seguridad-industrial.html" data-anima>
         <svg class="line__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17a8 8 0 0 1 16 0"/><path d="M9 17V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v9"/><path d="M2.5 17h19"/></svg>
         <span class="line__name">Seguridad<br>industrial</span>
         <span class="line__more">Ver la línea <svg aria-hidden="true"><use href="#flecha"/></svg></span>
       </a>
 
-      <a class="line line--mid" href="catalogo/papeleria.html">
+      <a class="line line--mid" href="catalogo/papeleria.html" data-anima>
         <svg class="line__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
         <span class="line__name">Papelería</span>
         <span class="line__more">Ver la línea <svg aria-hidden="true"><use href="#flecha"/></svg></span>
       </a>
 
-      <a class="line line--soft" href="catalogo/muebles-y-enseres.html">
+      <a class="line line--soft" href="catalogo/muebles-y-enseres.html" data-anima>
         <svg class="line__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5h12v7H6z"/><path d="M4.5 12h15"/><path d="M7.5 12v7"/><path d="M16.5 12v7"/></svg>
         <span class="line__name">Muebles<br>y enseres</span>
         <span class="line__more">Ver la línea <svg aria-hidden="true"><use href="#flecha"/></svg></span>
       </a>
     </div>
 
-    <div class="note-bar">
+    <div class="note-bar" data-anima>
       <p class="note-bar__text"><strong>¿Y lo que no está en el catálogo?</strong> Pregúntanos — buena parte de lo que hoy manejamos empezó siendo el pedido especial de un cliente.</p>
       <a class="btn btn--outline btn--sm" href="#contacto">Consultar disponibilidad</a>
     </div>
@@ -153,9 +156,9 @@
 <!-- ============================ MARCAS ============================ -->
 <section class="section" id="marcas" style="overflow:hidden">
   <div class="wrap">
-    <div class="section__head section__head--center">
+    <div class="section__head section__head--center" data-anima>
       <p class="eyebrow">Respaldo</p>
-      <h2>Algunas de nuestras marcas distribuidas</h2>
+      <h2 data-palabras>Algunas de nuestras marcas distribuidas</h2>
       <p>Cuando el auditor pregunta de qué marca es el guante o la sutura, la respuesta importa.</p>
     </div>
   </div>
@@ -176,20 +179,20 @@
 <!-- ============================ SECTORES ============================ -->
 <section class="section--tint" id="sectores">
   <div class="wrap">
-    <div class="section__head">
+    <div class="section__head" data-anima>
       <p class="eyebrow">Sectores que atendemos</p>
-      <h2>Cada sector que atendemos tiene sus necesidades, las conocemos y con responsabilidad les cumplimos:</h2>
+      <h2 data-palabras>Cada sector que atendemos tiene sus necesidades, las conocemos y con responsabilidad les cumplimos:</h2>
     </div>
 
     <div class="sectors">
-      <div class="sector"><h3>Clínicas, IPS y hospitales</h3><p>Gasas, suturas, soluciones y jeringas — con la bolsa roja y el recolector de cortopunzantes que exige el plan de residuos.</p></div>
-      <div class="sector"><h3>Laboratorios clínicos</h3><p>Láminas y cubreobjetos, tubos de muestra, tiras reactivas, colorantes y reactivos de rutina.</p></div>
-      <div class="sector"><h3>Consultorios odontológicos</h3><p>Pieza de alta y de baja, contraángulo, micromotor, lámpara de fotocurado y todo el desechable de barrera.</p></div>
-      <div class="sector"><h3>Atención prehospitalaria</h3><p>Camilla e inmovilización espinal, cuello cervical, succión portátil y desfibrilador para ambulancia y brigada.</p></div>
-      <div class="sector"><h3>Plantas e industria</h3><p>EPP certificado, dotación por talla, protección respiratoria y desengrasantes industriales por caneca.</p></div>
-      <div class="sector"><h3>Construcción y alturas</h3><p>Arnés de cuerpo entero, eslinga, línea de vida, mosquetón y casco con barbuquejo.</p></div>
-      <div class="sector"><h3>Oficinas y sedes administrativas</h3><p>Papelería, cafetería y aseo en un solo pedido mensual, con la misma factura.</p></div>
-      <div class="sector"><h3>Hotelería, restaurantes y alimentos</h3><p>Desinfección de superficies, guante de manipulación, bota blanca y línea de empaques.</p></div>
+      <div class="sector sector--ancho sector--acento" data-anima><h3>Clínicas, IPS y hospitales</h3><p>Gasas, suturas, soluciones y jeringas — con la bolsa roja y el recolector de cortopunzantes que exige el plan de residuos.</p></div>
+      <div class="sector sector--ancho" data-anima><h3>Laboratorios clínicos</h3><p>Láminas y cubreobjetos, tubos de muestra, tiras reactivas, colorantes y reactivos de rutina.</p></div>
+      <div class="sector" data-anima><h3>Consultorios odontológicos</h3><p>Pieza de alta y de baja, contraángulo, micromotor, lámpara de fotocurado y todo el desechable de barrera.</p></div>
+      <div class="sector" data-anima><h3>Atención prehospitalaria</h3><p>Camilla e inmovilización espinal, cuello cervical, succión portátil y desfibrilador para ambulancia y brigada.</p></div>
+      <div class="sector" data-anima><h3>Plantas e industria</h3><p>EPP certificado, dotación por talla, protección respiratoria y desengrasantes industriales por caneca.</p></div>
+      <div class="sector" data-anima><h3>Construcción y alturas</h3><p>Arnés de cuerpo entero, eslinga, línea de vida, mosquetón y casco con barbuquejo.</p></div>
+      <div class="sector sector--ancho" data-anima><h3>Oficinas y sedes administrativas</h3><p>Papelería, cafetería y aseo en un solo pedido mensual, con la misma factura.</p></div>
+      <div class="sector sector--ancho sector--acento" data-anima><h3>Hotelería, restaurantes y alimentos</h3><p>Desinfección de superficies, guante de manipulación, bota blanca y línea de empaques.</p></div>
     </div>
   </div>
 </section>
@@ -197,7 +200,7 @@
 <!-- ============================ PEDIDOS ============================ -->
 <section class="section" id="pedidos">
   <div class="wrap">
-    <div class="orders">
+    <div class="orders" data-anima>
       <svg viewBox="0 0 100 100" width="44" height="44" aria-hidden="true" style="color:var(--blue-500)"><use href="#ciclo"/></svg>
       <div>
         <h3>Si ya eres cliente, haz tu pedido en línea</h3>
@@ -211,9 +214,9 @@
 <!-- ============================ CIERRE ============================ -->
 <section class="section" style="padding-top:0" id="contacto">
   <div class="wrap">
-    <div class="closer">
+    <div class="closer" data-anima>
       <div>
-        <h2>Cuéntanos qué consume tu sede y te armamos la propuesta.</h2>
+        <h2 data-palabras>Cuéntanos qué consume tu sede y te armamos la propuesta.</h2>
         <p>Mandas tu última orden de compra —en el formato que sea— y te la devolvemos cotizada línea por línea, para que compares.</p>
       </div>
       <div>
