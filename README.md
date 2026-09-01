@@ -29,15 +29,16 @@ Tras cada `push`, el workflow **`verificar-sitio`** pide la página por HTTPS de
 
 ## Lista de go-live — nada de esto está hecho
 
-**Contenido** — los `[CORCHETES]` de `index.html` los completa Dispromed:
+**Contenido:**
 
-- [ ] `[N]` referencias · `[AÑOS]` de operación
-- [ ] `[NIT]` · `[DIRECCIÓN]` · `[CIUDAD]`
-- [ ] `[TELÉFONO]` · `[WHATSAPP]` · `[HORARIO DE ATENCIÓN]`
-- [ ] Foto real del banner — horizontal, con espacio libre a la izquierda para el texto
+- [x] Razón social, NIT, dirección, ciudad, teléfono y horario — confirmados por el cliente el 2026-08-31
+- [x] 23 años de operación
+- [ ] **WhatsApp** — el cliente no lo dio; hoy la web no lo ofrece
+- [ ] **Número real de referencias** — la cifra sale de contar el catálogo, no de estimarla
+- [ ] Foto del banner — horizontal, con espacio libre a la izquierda para el texto
 - [ ] Confirmar los 8 sectores: los deduje del catálogo, no de una lista suya
 - [ ] Confirmar qué marcas se pueden declarar como **distribución autorizada** (estar en el catálogo no basta) y conseguir sus logotipos en SVG
-- [ ] Redactar la **política de tratamiento de datos** (Ley 1581 de 2012). Hoy es un marcador.
+- [ ] Redactar la **política de tratamiento de datos** (Ley 1581 de 2012). Hoy es un marcador, y el pie ya la enlaza.
 
 **Publicación:**
 
