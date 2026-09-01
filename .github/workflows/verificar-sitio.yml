@@ -84,11 +84,30 @@ jobs:
           set -eu
           fallo=0
 
+          # Reintenta antes de dar por malo: al enganchar un dominio propio por
+          # primera vez, GitHub tarda unos minutos en emitir el certificado, y
+          # durante esa ventana un `curl` de un solo intento falla con
+          # `SSL: no alternative certificate subject name`. El sitio esta bien;
+          # lo que falta es el certificado. Un control que no distingue "roto"
+          # de "todavia no" acaba ignorandose, que es peor que no tenerlo.
+          reintenta() {
+            etiqueta="$1"; url="$2"
+            for n in 1 2 3 4 5 6; do
+              if curl -sSf --max-time 20 -o /dev/null "$url"; then
+                [ "$n" -gt 1 ] && echo "  $etiqueta OK al intento $n"
+                return 0
+              fi
+              echo "  $etiqueta aun no responde (intento $n/6)"
+              sleep 20
+            done
+            return 1
+          }
+
           # El certificado tiene que ser válido: sin -k, curl falla si no lo es.
-          curl -sSf --max-time 20 -o /dev/null "https://$HOST/" || { echo "::error::TLS o HTTPS no responden"; fallo=1; }
+          reintenta "pagina" "https://$HOST/" || { echo "::error::TLS o HTTPS no responden tras 2 minutos"; fallo=1; }
 
           # La página no puede quedarse sin su hoja de estilo.
-          curl -sSf --max-time 20 -o /dev/null "https://$HOST/assets/css/main.css" || { echo "::error::main.css no se sirve"; fallo=1; }
+          reintenta "main.css" "https://$HOST/assets/css/main.css" || { echo "::error::main.css no se sirve"; fallo=1; }
 
           # Un marcador de contenido: si esto falta, se publicó otra cosa.
           grep -q "Todo lo que tu operación necesita" /tmp/live.html || { echo "::error::El titular no aparece en la página viva"; fallo=1; }
