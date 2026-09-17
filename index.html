@@ -22,9 +22,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=12">
+<link rel="stylesheet" href="assets/css/main.css?v=13">
+<link rel="preload" as="image" href="assets/img/banner/bodega-1600.jpg" media="(min-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/banner/bodega-800.jpg" media="(max-width: 767px)" fetchpriority="high">
 <script defer src="assets/js/catalogo.js?v=2"></script>
 <script defer src="assets/js/efectos.js?v=1"></script>
+<script defer src="assets/js/banner.js?v=1"></script>
 </head>
 <body>
 
@@ -49,6 +52,25 @@
       <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
     </g>
   </symbol>
+  <symbol id="whatsapp" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+  </symbol>
+  <symbol id="telefono" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/>
+  </symbol>
+  <symbol id="correo" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 9 6 9-6"/>
+    </g>
+  </symbol>
+  <symbol id="reloj" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3.2 2"/>
+    </g>
+  </symbol>
+  <symbol id="chevron" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/>
+  </symbol>
 </svg>
 
 <!-- ============================ CABECERA ============================ -->
@@ -68,41 +90,114 @@
       <a href="#lineas">Líneas</a>
       <a href="#marcas">Marcas</a>
       <a href="#sectores">Sectores</a>
-      <a href="#pedidos">Pedidos</a>
+      <!-- OCULTO (2026-09-17): pedidos vía Holaeli. Para reactivar, quitar `hidden`. -->
+      <a href="#pedidos" hidden>Pedidos</a>
       <a href="#contacto">Contacto</a>
     </nav>
 
-    <a class="btn btn--primary btn--sm" href="https://app.holaeli.app" target="_blank" rel="noopener">Entrar al portal de pedidos</a>
+    <!-- OCULTO (2026-09-17): pedidos vía Holaeli. Para reactivar, quitar `hidden`. -->
+    <a class="btn btn--primary btn--sm" href="https://app.holaeli.app" target="_blank" rel="noopener" hidden>Entrar al portal de pedidos</a>
   </div>
 </header>
 
 <main id="contenido">
 
 <!-- ============================ BANNER ============================ -->
-<section class="hero">
+<!--
+  Carrusel de tres fotos, cada una con su frase. Sin JavaScript se ve la primera
+  diapositiva completa y los controles no aparecen (los enciende banner.js).
+
+  🔴 La frase de la primera diapositiva la vigila .github/workflows/verificar-sitio.yml
+  («Todo lo que tu operación necesita»). Si se cambia, cambiar también el workflow.
+
+  Las fotos son de stock (Unsplash, licencia libre para uso comercial) y PROVISIONALES
+  hasta tener fotos reales de Dispromed. Para cambiarlas basta con reemplazar los
+  ficheros de assets/img/banner/ conservando el nombre: -1600.jpg es el recorte
+  horizontal de escritorio (16:9) y -800.jpg el vertical de móvil (4:5).
+-->
+<section class="hero" id="banner" aria-roledescription="carrusel" aria-label="Presentación de Dispromed">
   <div class="hero__bg" aria-hidden="true"></div>
-  <div class="hero__mesh" aria-hidden="true"></div>
+
+  <div class="hero__slides" aria-hidden="true">
+    <div class="hero__slide is-active" data-slide="0">
+      <picture>
+        <source media="(max-width: 767px)" srcset="assets/img/banner/bodega-800.jpg">
+        <img class="hero__photo" src="assets/img/banner/bodega-1600.jpg" alt="" fetchpriority="high">
+      </picture>
+    </div>
+    <div class="hero__slide" data-slide="1">
+      <picture>
+        <source media="(max-width: 767px)" srcset="assets/img/banner/laboratorio-800.jpg">
+        <img class="hero__photo hero__photo--derecha" src="assets/img/banner/laboratorio-1600.jpg" alt="" loading="lazy">
+      </picture>
+    </div>
+    <div class="hero__slide" data-slide="2">
+      <picture>
+        <source media="(max-width: 767px)" srcset="assets/img/banner/asesor-800.jpg">
+        <img class="hero__photo hero__photo--derecha" src="assets/img/banner/asesor-1600.jpg" alt="" loading="lazy">
+      </picture>
+    </div>
+  </div>
+
+  <div class="hero__tint" aria-hidden="true"></div>
   <svg class="hero__mark" aria-hidden="true" style="color:#fff"><use href="#ciclo"/></svg>
   <div class="hero__veil" aria-hidden="true"></div>
   <div class="hero__grain" aria-hidden="true"></div>
 
   <div class="wrap hero__inner">
-    <h1 data-anima data-palabras>Todo lo que tu operación necesita, en un solo techo.</h1>
-    <p data-anima>5 líneas, miles de productos y un asesor que te puede orientar en todo lo que necesitas.</p>
-    <div class="hero__cta" data-anima>
-      <a class="btn btn--brand btn--lg" href="https://app.holaeli.app" target="_blank" rel="noopener">Entrar al portal de pedidos</a>
-      <a class="btn btn--ghost-light btn--lg" href="#lineas">Recorrer el catálogo</a>
+    <div class="hero__texts" aria-live="polite">
+      <div class="hero__text is-active" data-slide="0" role="group" aria-roledescription="diapositiva" aria-label="1 de 3">
+        <h1 class="hero__title">Todo lo que tu operación necesita, en un solo techo.</h1>
+        <p>5 líneas, miles de productos y un asesor que te puede orientar en todo lo que necesitas.</p>
+      </div>
+      <div class="hero__text" data-slide="1" role="group" aria-roledescription="diapositiva" aria-label="2 de 3">
+        <h2 class="hero__title">Abastecemos clínicas y empresas desde 2003.</h2>
+        <p>Conocemos lo que exige cada sector y respondemos con el insumo correcto, de marcas que respaldan su calidad.</p>
+      </div>
+      <div class="hero__text" data-slide="2" role="group" aria-roledescription="diapositiva" aria-label="3 de 3">
+        <h2 class="hero__title">Un asesor que conoce lo que tu sede consume.</h2>
+        <p>Nos cuentas qué necesitas —en el formato que sea— y te lo devolvemos cotizado línea por línea.</p>
+      </div>
+    </div>
+
+    <div class="hero__cta">
+      <!-- OCULTO (2026-09-17): pedidos vía Holaeli. Para reactivar, quitar `hidden`. -->
+      <a class="btn btn--brand btn--lg" href="https://app.holaeli.app" target="_blank" rel="noopener" hidden>Entrar al portal de pedidos</a>
+      <a class="btn btn--brand btn--lg" href="#lineas">Recorrer el catálogo</a>
+      <a class="btn btn--ghost-light btn--lg" href="#contacto">Hablar con un asesor</a>
+    </div>
+
+    <div class="hero__controls">
+      <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Foto anterior">
+        <svg aria-hidden="true"><use href="#chevron"/></svg>
+      </button>
+      <div class="hero__dots">
+        <button class="hero__dot is-active" type="button" data-ir="0" aria-label="Ver foto 1 de 3" aria-current="true"><span class="hero__dot-bar"></span></button>
+        <button class="hero__dot" type="button" data-ir="1" aria-label="Ver foto 2 de 3"><span class="hero__dot-bar"></span></button>
+        <button class="hero__dot" type="button" data-ir="2" aria-label="Ver foto 3 de 3"><span class="hero__dot-bar"></span></button>
+      </div>
+      <button class="hero__arrow" type="button" aria-label="Foto siguiente">
+        <svg aria-hidden="true"><use href="#chevron"/></svg>
+      </button>
     </div>
   </div>
 </section>
 
-<!-- ============================ CIFRAS ============================ -->
-<section class="stats" id="nosotros" aria-label="Dispromed en cifras">
-  <div class="wrap stats__grid">
-    <div data-anima><div class="stat__n" data-stat="anios" data-desde="2003-09-01">23</div><div class="stat__l">años abasteciendo instituciones</div></div>
-    <div data-anima><div class="stat__n" data-stat="lineas">5</div><div class="stat__l">líneas de suministro</div></div>
-    <div data-anima><div class="stat__n" data-stat="sublineas">24</div><div class="stat__l">sublíneas surtidas</div></div>
-    <div data-anima><div class="stat__n" data-stat="referencias">2.877</div><div class="stat__l">referencias en catálogo</div></div>
+<!-- ============================ QUIÉNES SOMOS + CIFRAS ============================ -->
+<section class="stats about" id="nosotros">
+  <div class="wrap about__grid">
+    <div class="about__text" data-anima>
+      <p class="eyebrow">¿Quiénes somos?</p>
+      <h2>Somos el proveedor que resuelve el abastecimiento de tu sede.</h2>
+      <p>Dispromed S.A.S. es una empresa de Medellín dedicada desde 2003 a la distribución de insumos institucionales. Atendemos clínicas, laboratorios, industria, oficinas y hotelería con un catálogo que reúne lo medicoquirúrgico, el aseo y la cafetería, la seguridad industrial, la papelería y el mobiliario — para que compres a un solo proveedor lo que antes repartías entre muchos.</p>
+    </div>
+
+    <div class="stats__grid" aria-label="Dispromed en cifras">
+      <div class="stat" data-anima><div class="stat__n" data-stat="anios" data-desde="2003-09-01">23</div><div class="stat__l">años abasteciendo instituciones</div></div>
+      <div class="stat" data-anima><div class="stat__n" data-stat="lineas">5</div><div class="stat__l">líneas de suministro</div></div>
+      <div class="stat" data-anima><div class="stat__n" data-stat="sublineas">24</div><div class="stat__l">sublíneas surtidas</div></div>
+      <div class="stat" data-anima><div class="stat__n" data-stat="referencias">2.877</div><div class="stat__l">referencias en catálogo</div></div>
+    </div>
   </div>
 </section>
 
@@ -198,7 +293,8 @@
 </section>
 
 <!-- ============================ PEDIDOS ============================ -->
-<section class="section" id="pedidos">
+<!-- OCULTO (2026-09-17): pedidos vía Holaeli. Para reactivar, quitar `hidden`. -->
+<section class="section" id="pedidos" hidden>
   <div class="wrap">
     <div class="orders" data-anima>
       <svg viewBox="0 0 100 100" width="44" height="44" aria-hidden="true" style="color:var(--blue-500)"><use href="#ciclo"/></svg>
@@ -257,7 +353,8 @@
         <ul>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#marcas">Marcas</a></li>
-          <li><a href="https://app.holaeli.app" target="_blank" rel="noopener">Portal de pedidos</a></li>
+          <!-- OCULTO (2026-09-17): pedidos vía Holaeli. Para reactivar, quitar `hidden`. -->
+          <li hidden><a href="https://app.holaeli.app" target="_blank" rel="noopener">Portal de pedidos</a></li>
           <li><a href="#contacto">Contacto</a></li>
           <li><a href="politica-de-datos.html">Política de datos</a></li>
         </ul>
@@ -265,11 +362,31 @@
 
       <div>
         <h4>Contacto</h4>
-        <ul>
-          <li><a href="tel:+576044480924">(604) 448 0924</a></li>
-          <li><a href="mailto:comercial1@dispromed.com.co">comercial1@dispromed.com.co</a></li>
-          <li>Lunes a viernes, 7:00 a.&nbsp;m. – 5:00 p.&nbsp;m.</li>
-          <li>Sábados, 8:00 a.&nbsp;m. – 12:00 m.</li>
+        <ul class="contact">
+          <li>
+            <a class="contact__item" href="https://wa.me/573174285502?text=Hola%20Dispromed%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20productos." target="_blank" rel="noopener">
+              <span class="contact__icon contact__icon--wa"><svg aria-hidden="true"><use href="#whatsapp"/></svg></span>
+              <span><span class="contact__label">WhatsApp</span>317 428 5502</span>
+            </a>
+          </li>
+          <li>
+            <a class="contact__item" href="tel:+576044480924">
+              <span class="contact__icon"><svg aria-hidden="true"><use href="#telefono"/></svg></span>
+              <span><span class="contact__label">Teléfono</span>(604) 448 0924</span>
+            </a>
+          </li>
+          <li>
+            <a class="contact__item" href="mailto:comercial1@dispromed.com.co">
+              <span class="contact__icon"><svg aria-hidden="true"><use href="#correo"/></svg></span>
+              <span><span class="contact__label">Correo</span>comercial1@dispromed.com.co</span>
+            </a>
+          </li>
+          <li>
+            <span class="contact__item">
+              <span class="contact__icon"><svg aria-hidden="true"><use href="#reloj"/></svg></span>
+              <span><span class="contact__label">Horario de atención</span><span class="nw">Lunes a viernes:</span> <span class="nw">8:00 a.&nbsp;m. – 12:00 m.</span> <span class="nw">y 2:00 p.&nbsp;m. – 6:00 p.&nbsp;m.</span><br><span class="nw">Sábados:</span> <span class="nw">8:00 a.&nbsp;m. – 12:00 m.</span></span>
+            </span>
+          </li>
         </ul>
       </div>
     </div>
@@ -282,6 +399,13 @@
     </div>
   </div>
 </footer>
+
+<!-- Botón flotante de WhatsApp — lo atiende comercial1. Es un enlace, no un widget:
+     no carga scripts de terceros ni instala cookies. -->
+<a class="wa-float" href="https://wa.me/573174285502?text=Hola%20Dispromed%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20productos." target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg aria-hidden="true"><use href="#whatsapp"/></svg>
+  <span class="wa-float__tip">¿Hablamos por WhatsApp?</span>
+</a>
 
 <script>
 (function () {

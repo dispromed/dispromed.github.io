@@ -122,9 +122,9 @@ Detalle de por qué cada fichero generado tiene la forma que tiene:
 
 - [x] Razón social, NIT, dirección, ciudad, teléfono y horario — confirmados por el cliente el 2026-08-31
 - [x] 23 años de operación
-- [ ] **WhatsApp** — el cliente no lo dio; hoy la web no lo ofrece
+- [x] **WhatsApp** — 317 428 5502, lo atiende comercial1 (botón flotante + pie, 2026-09-17)
 - [x] **Número real de referencias** — 2.877, contadas del CSV y regeneradas por CI
-- [ ] Foto del banner — horizontal, con espacio libre a la izquierda para el texto
+- [ ] Fotos del banner — hoy son 3 de stock (Unsplash) PROVISIONALES en `assets/img/banner/`; reemplazar por fotos reales conservando nombres: `-1600.jpg` horizontal 16:9, `-800.jpg` vertical 4:5
 - [ ] Confirmar los 8 sectores: los deduje del catálogo, no de una lista suya
 - [ ] Confirmar qué marcas se pueden declarar como **distribución autorizada** (estar en el catálogo no basta) y conseguir sus logotipos en SVG
 - [x] **Política de tratamiento de datos** publicada el 2026-09-01 — versión preliminar, pendiente de revisión jurídica y de adopción formal por Dispromed. Ver «Pendiente en la política» abajo.
