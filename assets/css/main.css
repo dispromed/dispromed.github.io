@@ -681,10 +681,12 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 /* En pantallas anchas el texto va a la izquierda: el sujeto de la foto se
    corre a la derecha para no quedar debajo del titular. */
 .hero__photo--derecha { object-position: 70% center; }
+/* La fachada ya viene compuesta con el sujeto a la derecha: no se desplaza. */
+.hero__photo { object-position: center 30%; }
 
 /* Un solo tinte azul sobre las tres fotos: es lo que hace que tres fotos
    distintas se lean como un set de la misma marca. */
-.hero__tint { position: absolute; inset: 0; background: #0A5C82; mix-blend-mode: multiply; opacity: .5; pointer-events: none; }
+.hero__tint { position: absolute; inset: 0; background: #0A5C82; mix-blend-mode: multiply; opacity: .3; pointer-events: none; }
 .hero__mark { opacity: .07; }
 
 .hero__texts { display: grid; }
@@ -703,8 +705,10 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 .hero .hero__title {
   font-family: var(--display); font-weight: 700;
   font-size: clamp(36px, 5.2vw, 64px); line-height: 1.04; letter-spacing: -.028em;
-  color: #fff; max-width: 820px; text-wrap: balance; margin: 0;
+  color: #fff; max-width: 700px; text-wrap: balance; margin: 0;
 }
+/* 700 px y no más: a la derecha va el letrero de la fachada y no debe quedar
+   debajo del titular. */
 
 .hero__controls { display: none; align-items: center; gap: 14px; margin-top: 44px; }
 .hero.is-ready .hero__controls { display: flex; }

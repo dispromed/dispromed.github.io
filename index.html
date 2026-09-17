@@ -22,9 +22,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=13">
-<link rel="preload" as="image" href="assets/img/banner/bodega-1600.jpg" media="(min-width: 768px)" fetchpriority="high">
-<link rel="preload" as="image" href="assets/img/banner/bodega-800.jpg" media="(max-width: 767px)" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/main.css?v=14">
+<link rel="preload" as="image" href="assets/img/banner/banner-1-1600.jpg" media="(min-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/banner/banner-1-800.jpg" media="(max-width: 767px)" fetchpriority="high">
 <script defer src="assets/js/catalogo.js?v=2"></script>
 <script defer src="assets/js/efectos.js?v=1"></script>
 <script defer src="assets/js/banner.js?v=1"></script>
@@ -110,10 +110,12 @@
   🔴 La frase de la primera diapositiva la vigila .github/workflows/verificar-sitio.yml
   («Todo lo que tu operación necesita»). Si se cambia, cambiar también el workflow.
 
-  Las fotos son de stock (Unsplash, licencia libre para uso comercial) y PROVISIONALES
-  hasta tener fotos reales de Dispromed. Para cambiarlas basta con reemplazar los
-  ficheros de assets/img/banner/ conservando el nombre: -1600.jpg es el recorte
-  horizontal de escritorio (16:9) y -800.jpg el vertical de móvil (4:5).
+  Hoy las tres diapositivas usan la MISMA foto: la fachada de Dispromed, recortada
+  para que no aparezcan los locales vecinos. Cuando haya fotos reales para las
+  diapositivas 2 y 3, basta con reemplazar banner-2-* y banner-3-* en
+  assets/img/banner/ conservando el nombre: -1600.jpg es el recorte horizontal
+  de escritorio (16:9, sujeto a la derecha: a la izquierda va el texto) y
+  -800.jpg el vertical de móvil (4:5).
 -->
 <section class="hero" id="banner" aria-roledescription="carrusel" aria-label="Presentación de Dispromed">
   <div class="hero__bg" aria-hidden="true"></div>
@@ -121,20 +123,20 @@
   <div class="hero__slides" aria-hidden="true">
     <div class="hero__slide is-active" data-slide="0">
       <picture>
-        <source media="(max-width: 767px)" srcset="assets/img/banner/bodega-800.jpg">
-        <img class="hero__photo" src="assets/img/banner/bodega-1600.jpg" alt="" fetchpriority="high">
+        <source media="(max-width: 767px)" srcset="assets/img/banner/banner-1-800.jpg">
+        <img class="hero__photo" src="assets/img/banner/banner-1-1600.jpg" alt="" fetchpriority="high">
       </picture>
     </div>
     <div class="hero__slide" data-slide="1">
       <picture>
-        <source media="(max-width: 767px)" srcset="assets/img/banner/laboratorio-800.jpg">
-        <img class="hero__photo hero__photo--derecha" src="assets/img/banner/laboratorio-1600.jpg" alt="" loading="lazy">
+        <source media="(max-width: 767px)" srcset="assets/img/banner/banner-2-800.jpg">
+        <img class="hero__photo hero__photo--derecha" src="assets/img/banner/banner-2-1600.jpg" alt="" loading="lazy">
       </picture>
     </div>
     <div class="hero__slide" data-slide="2">
       <picture>
-        <source media="(max-width: 767px)" srcset="assets/img/banner/asesor-800.jpg">
-        <img class="hero__photo hero__photo--derecha" src="assets/img/banner/asesor-1600.jpg" alt="" loading="lazy">
+        <source media="(max-width: 767px)" srcset="assets/img/banner/banner-3-800.jpg">
+        <img class="hero__photo hero__photo--derecha" src="assets/img/banner/banner-3-1600.jpg" alt="" loading="lazy">
       </picture>
     </div>
   </div>
