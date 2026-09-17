@@ -246,7 +246,21 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 @keyframes mqrev { from { transform: translateX(-50%); }  to { transform: translateX(0); } }
 @media (prefers-reduced-motion: reduce) {
   .mq-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; gap: 20px 40px; padding: 0 var(--pad); }
+  /* Quieto no hay bucle: la segunda copia del riel (la aria-hidden, que solo
+     existe para que el desplazamiento no salte) mostraría cada marca dos veces. */
+  .mq-item[aria-hidden="true"] { display: none; }
+  /* Casillas algo más compactas: las 10 marcas caben en una fila en escritorio
+     y en móvil se reparten parejas, sin una marca huérfana abajo. */
+  .mq-track { gap: 16px 26px; }
+  .mq-item { width: 142px; }
+  .mq-item img { max-width: 124px; }
 }
+/* En movimiento, cada copia del riel tiene que ser más ancha que la pantalla:
+   si no, en monitores muy anchos se ve el final de una copia junto al inicio de
+   la siguiente y las marcas se repiten a la vista. Se abre el espacio entre
+   logos en vez de añadir copias, para no tocar la cuenta del bucle (-50%). */
+@media (prefers-reduced-motion: no-preference) and (min-width: 1800px) { .mq-track { gap: 110px; } }
+@media (prefers-reduced-motion: no-preference) and (min-width: 2400px) { .mq-track { gap: 170px; } }
 .mq-fade { position: absolute; top: 0; bottom: 0; width: 170px; pointer-events: none; }
 .mq-fade--l { left: 0; background: linear-gradient(90deg, var(--paper) 12%, rgba(255,255,255,0) 100%); }
 .mq-fade--r { right: 0; background: linear-gradient(270deg, var(--paper) 12%, rgba(255,255,255,0) 100%); }
