@@ -7,3 +7,6 @@
 *.jpg binary
 *.webp binary
 *.pdf binary
+# vCard 3.0 exige CRLF real en cada linea; dejar el byte tal cual se guardo,
+# sin normalizacion, para que lo verificado con xxd siga siendo cierto tras comitear.
+*.vcf binary

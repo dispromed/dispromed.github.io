@@ -1,0 +1,267 @@
+/* =============================================================================
+   Dispromed — tarjeta de presentación NFC (tarjeta/<persona>/)
+   Fichero propio, aparte de main.css: solo lo cargan estas tres páginas, así
+   que una versión nueva de esta hoja no obliga a subir la versión de main.css
+   en las demás 8 páginas del sitio.
+
+   Reutiliza los tokens de color y tipografía que ya declara main.css (esa
+   hoja se carga ANTES que esta en cada página) — aquí solo se añade lo que
+   la maqueta aprobada suma encima: la profundidad de fondo oscura, el
+   degradado del banner reutilizado como bloque de cierre, y la fuente
+   monoespaciada de los rótulos.
+
+   Fuente: docs visual — maqueta aprobada 2026-09-22 (tres teléfonos
+   simulados). Lo que se implementa es únicamente el contenido de cada
+   pantalla; el marco del teléfono, la barra de estado, la tarjeta física
+   impresa y las notas de la maqueta son andamiaje y no tienen equivalente
+   aquí.
+   ============================================================================= */
+
+:root {
+  --abyss: #03161F;
+  --deep: #062F45;
+  --dim: #7FB4CE;
+  /* Mismo degradado que .hero__bg en main.css — así el cierre de la tarjeta
+     se reconoce como la misma pieza que el banner de la home. */
+  --grad: linear-gradient(118deg, #062F45 0%, #0A5C82 48%, #12A5DC 100%);
+  --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+}
+
+body.tarjeta-page {
+  background: var(--abyss);
+  color: #EAF6FC;
+}
+
+.tarjeta {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 34px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Resplandor superior — el mismo recurso que usa la maqueta para que la
+   pantalla no arranque en negro plano. */
+.tarjeta::before {
+  content: "";
+  position: absolute;
+  top: -160px; left: 50%;
+  width: 620px; height: 480px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(18,165,220,.45), rgba(18,165,220,0));
+  pointer-events: none;
+}
+
+/* ---------- Retrato ---------- */
+.tarjeta__portrait {
+  position: relative;
+  height: 380px;
+  background: var(--deep);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 86%);
+}
+.tarjeta__portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  /* Un solo tono: sin esto, dos fotos de fondos y temperaturas distintas
+     (pared rosada / jardín / vegetación) no se leen como el mismo equipo. */
+  filter: grayscale(1) contrast(1.06) brightness(1.02);
+}
+/* Retrato de Javier: encuadre más alto — la foto original ya trae la cara
+   cerca del borde superior. */
+.tarjeta__portrait img.is-encuadre-alto { object-position: center 12%; }
+/* Capa de color de marca sobre la foto en escala de grises — es lo que
+   unifica los tres retratos, no se suaviza ni se retira. */
+.tarjeta__portrait::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(200deg, #12A5DC 0%, #0A5C82 55%, #062F45 100%);
+  mix-blend-mode: multiply;
+}
+.tarjeta__shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(3,22,31,.92) 0%, rgba(3,22,31,.22) 38%, rgba(3,22,31,.42) 100%);
+}
+.tarjeta__brand {
+  position: absolute; top: 20px; left: 20px; z-index: 3;
+  display: inline-flex;
+}
+.tarjeta__brand .logo__mark svg { color: #fff; }
+
+/* ---------- Identidad ---------- */
+.tarjeta__id {
+  position: relative; z-index: 3;
+  margin-top: -34px;
+  padding: 0 20px;
+}
+.tarjeta__tick {
+  display: block;
+  width: 38px; height: 3px;
+  background: var(--blue-500);
+  border-radius: 2px;
+}
+.tarjeta__id h1 {
+  font-family: var(--display);
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  color: #fff;
+  margin-top: 14px;
+}
+.tarjeta__role {
+  display: block;
+  margin: 9px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--blue-300);
+}
+
+/* ---------- Botones de contacto rápido ---------- */
+.tarjeta__acts {
+  display: grid;
+  /* minmax(0,1fr), no 1fr a secas: sin el 0 cada columna hereda como ancho
+     mínimo el min-content de su contenido (el texto "WhatsApp" sin partir),
+     y si los tres min-content no caben en el ancho real, la rejilla se
+     desborda del contenedor en vez de encoger las columnas. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  padding: 22px 20px 0;
+  position: relative; z-index: 3;
+}
+.tarjeta__act {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  /* Los ítems de grid heredan como mínimo su min-content salvo que se anule:
+     sin esto, "WhatsApp" sin partir sigue forzando el ancho aunque la pista
+     ya tenga minmax(0,1fr). */
+  min-width: 0;
+  padding: 13px 4px 10px;
+  border-radius: 15px;
+  border: 1px solid rgba(143,215,242,.26);
+  background: rgba(143,215,242,.09);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #EAF6FC;
+  text-decoration: none;
+}
+.tarjeta__act svg { width: 21px; height: 21px; color: var(--blue-300); }
+.tarjeta__act--wa {
+  background: rgba(37,211,102,.15);
+  border-color: rgba(122,230,166,.4);
+  color: #BFF2D4;
+}
+.tarjeta__act--wa svg { color: #7AE6A6; }
+.tarjeta__act:hover { background: rgba(143,215,242,.16); }
+.tarjeta__act--wa:hover { background: rgba(37,211,102,.24); }
+
+/* ---------- Guardar contacto ---------- */
+.tarjeta__save {
+  margin: 11px 20px 0;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  border-radius: 999px;
+  background: var(--blue-500);
+  color: #06212F;
+  font-weight: 600;
+  font-size: 15.5px;
+  padding: 15px;
+  text-decoration: none;
+  position: relative; z-index: 3;
+  box-shadow: 0 14px 30px -14px rgba(18,165,220,.95);
+}
+.tarjeta__save svg { width: 19px; height: 19px; }
+.tarjeta__save:hover { background: var(--blue-300); color: #06212F; }
+
+/* ---------- Filas de datos ---------- */
+.tarjeta__rows {
+  margin: 22px 20px 0;
+  position: relative; z-index: 3;
+}
+.tarjeta__row {
+  display: grid;
+  grid-template-columns: 19px minmax(0, 1fr);
+  gap: 13px;
+  padding: 13px 0;
+  border-top: 1px solid rgba(143,215,242,.18);
+  align-items: start;
+  text-decoration: none;
+  color: #EAF6FC;
+  font-size: 13.5px;
+}
+.tarjeta__row svg { width: 18px; height: 18px; color: var(--blue-300); margin-top: 3px; }
+.tarjeta__row small {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 3px;
+}
+.tarjeta__row span { word-break: break-word; }
+.tarjeta__row:hover { color: #fff; }
+
+/* ---------- Bloque «Conozca Dispromed» ---------- */
+.tarjeta__promo {
+  margin: 24px 20px 0;
+  position: relative; z-index: 3;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--grad);
+  padding: 19px;
+}
+.tarjeta__promo .tarjeta__ring {
+  position: absolute; right: -66px; top: -60px;
+  width: 200px; height: 200px;
+  opacity: .2; color: #fff;
+}
+.tarjeta__promo b {
+  position: relative; z-index: 1;
+  font-family: var(--display);
+  font-size: 16px;
+  display: block;
+}
+.tarjeta__promo p {
+  position: relative; z-index: 1;
+  margin: 4px 0 14px;
+  font-size: 12.5px;
+  color: var(--on-dark);
+}
+.tarjeta__promo a {
+  position: relative; z-index: 1;
+  display: flex; justify-content: center; align-items: center; gap: 8px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink-2);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px;
+  text-decoration: none;
+  font-family: var(--mono);
+  letter-spacing: .02em;
+}
+.tarjeta__promo a svg { width: 16px; height: 16px; }
+.tarjeta__promo a:hover { color: var(--ink-2); background: var(--blue-100); }
+
+/* ---------- Pie ---------- */
+.tarjeta__foot {
+  margin: 24px 20px 0;
+  padding: 18px 0 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .08em;
+  line-height: 1.9;
+  color: var(--dim);
+  position: relative; z-index: 3;
+  border-top: 1px solid rgba(143,215,242,.14);
+}
+
+@media (max-width: 420px) {
+  .tarjeta__portrait { height: 320px; }
+}

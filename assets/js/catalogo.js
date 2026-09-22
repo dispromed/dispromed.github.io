@@ -87,7 +87,14 @@
   }
 
   function rellenarCifrasHome() {
-    var nodos = document.querySelectorAll('[data-stat]');
+    // Selector acotado a las claves que este fetch realmente rellena (no
+    // "[data-stat]" a secas): las páginas de tarjeta tienen su propio nodo
+    // data-stat="anios" -lo resuelve calcularAniosFundacion(), sin red- y
+    // antes de esta acotación su sola presencia bastaba para disparar el
+    // fetch a resumen.json aunque el resultado no se fuera a usar ahí.
+    var nodos = document.querySelectorAll(
+      '[data-stat="lineas"], [data-stat="sublineas"], [data-stat="referencias"]'
+    );
     if (!nodos.length) return;
 
     fetch(rutaDatos('resumen.json'))
