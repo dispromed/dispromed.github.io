@@ -52,12 +52,57 @@ body.tarjeta-page {
   pointer-events: none;
 }
 
+/* Isotipo de fondo — el glifo #ciclo grande, girando muy lento, apenas
+   visible. En la maqueta vive detrás de todo el contenido (retrato incluido
+   visualmente, aunque el retrato es opaco y lo tapa donde se solapan); aquí
+   basta con que quede detrás de los bloques con z-index:3. Faltaba por
+   completo en la implementación — sólo quedó el anillo pequeño del bloque
+   "Conozca Dispromed" (.tarjeta__ring), que es una pieza aparte. */
+.tarjeta__watermark {
+  position: absolute;
+  z-index: 1;
+  right: -34%;
+  top: clamp(220px, 44dvh, 340px);
+  width: clamp(260px, 108vw, 460px);
+  height: clamp(260px, 108vw, 460px);
+  color: #8FD7F2;
+  opacity: .07;
+  pointer-events: none;
+  animation: tarjeta-spin 64s linear infinite;
+}
+@keyframes tarjeta-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta__watermark { animation: none; }
+}
+
 /* ---------- Retrato ---------- */
+/* Alto relativo a la ventana, no un píxel fijo: el encargo del CTO fue
+   textual — "la imagen inicial debía llegar hasta Guardar contacto", es
+   decir la primera pantalla debe agotarse justo ahí (retrato + nombre +
+   accesos rápidos + Guardar contacto), dejando los datos de contacto y
+   "Conozca Dispromed" detrás del doblez. Un valor fijo en px no puede
+   cumplir eso en dos celulares de alto distinto (funcionaba "más o menos"
+   en uno y sobraba o faltaba en el otro).
+   Fórmula: alto de ventana dinámico (dvh, que ya descuenta la barra del
+   navegador) menos lo que ocupa todo lo que va DESPUÉS del retrato. Ese
+   "todo lo demás" también crece con el ancho (ver recalibración de escala
+   más abajo), así que se resta como un término en vw, no en px fijos —
+   70vw es la medida empírica de books+acts+save a ese ancho, verificada
+   por render en 360/390/430/768 (ver informe de entrega).
+   `clamp()` acota los dos extremos: ni un teléfono muy chico ni un iPad se
+   quedan con un retrato absurdo. */
 .tarjeta__portrait {
   position: relative;
-  height: 380px;
+  height: 380px; /* respaldo sin soporte de dvh */
   background: var(--deep);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 86%);
+}
+@supports (height: 1dvh) {
+  .tarjeta__portrait {
+    height: clamp(260px, calc(100dvh - 78vw), 650px);
+  }
 }
 .tarjeta__portrait img {
   width: 100%; height: 100%;
@@ -103,7 +148,15 @@ body.tarjeta-page {
 }
 .tarjeta__id h1 {
   font-family: var(--display);
-  font-size: 29px;
+  /* Recalibrado desde el 29px literal de la maqueta: ese valor se dimensionó
+     contra la pantalla simulada de 314px del mockup. Copiado tal cual a un
+     celular real (390-430px) queda desproporcionado frente al resto de la
+     composición. clamp(min, ratio-al-ancho-real, max) conserva la MISMA
+     proporción relativa (29/314 del ancho) en vez del mismo número de
+     píxeles; el tope superior es esa proporción aplicada a los 480px de
+     .tarjeta, así no sigue creciendo en tablet/desktop. Mismo criterio en
+     el resto de las reglas marcadas "recalibrado" de este fichero. */
+  font-size: clamp(28px, 9.24vw, 44px);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -.03em;
@@ -114,7 +167,7 @@ body.tarjeta-page {
   display: block;
   margin: 9px 0 0;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: clamp(10px, 3.5vw, 17px); /* recalibrado, ver .tarjeta__id h1 */
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -129,28 +182,32 @@ body.tarjeta-page {
      y si los tres min-content no caben en el ancho real, la rejilla se
      desborda del contenedor en vez de encoger las columnas. */
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 9px;
-  padding: 22px 20px 0;
+  gap: clamp(6px, 2.23vw, 11px); /* recalibrado, ver .tarjeta__id h1 */
+  padding: clamp(18px, 7vw, 34px) 20px 0; /* recalibrado */
   position: relative; z-index: 3;
 }
 .tarjeta__act {
   display: grid;
   justify-items: center;
-  gap: 7px;
+  gap: clamp(6px, 2.23vw, 11px); /* recalibrado */
   /* Los ítems de grid heredan como mínimo su min-content salvo que se anule:
      sin esto, "WhatsApp" sin partir sigue forzando el ancho aunque la pista
      ya tenga minmax(0,1fr). */
   min-width: 0;
-  padding: 13px 4px 10px;
+  padding: clamp(11px, 4.14vw, 20px) 4px clamp(8px, 3.18vw, 15px); /* recalibrado */
   border-radius: 15px;
   border: 1px solid rgba(143,215,242,.26);
   background: rgba(143,215,242,.09);
-  font-size: 11.5px;
+  font-size: clamp(10px, 3.66vw, 18px); /* recalibrado */
   font-weight: 500;
   color: #EAF6FC;
   text-decoration: none;
 }
-.tarjeta__act svg { width: 21px; height: 21px; color: var(--blue-300); }
+.tarjeta__act svg {
+  width: clamp(18px, 6.69vw, 32px); /* recalibrado */
+  height: clamp(18px, 6.69vw, 32px);
+  color: var(--blue-300);
+}
 .tarjeta__act--wa {
   background: rgba(37,211,102,.15);
   border-color: rgba(122,230,166,.4);
@@ -162,42 +219,50 @@ body.tarjeta-page {
 
 /* ---------- Guardar contacto ---------- */
 .tarjeta__save {
-  margin: 11px 20px 0;
+  margin: clamp(9px, 3.5vw, 17px) 20px 0; /* recalibrado, ver .tarjeta__id h1 */
   display: flex; align-items: center; justify-content: center; gap: 9px;
   border-radius: 999px;
   background: var(--blue-500);
   color: #06212F;
   font-weight: 600;
-  font-size: 15.5px;
-  padding: 15px;
+  font-size: clamp(13px, 4.94vw, 24px); /* recalibrado */
+  padding: clamp(13px, 4.78vw, 23px); /* recalibrado */
   text-decoration: none;
   position: relative; z-index: 3;
   box-shadow: 0 14px 30px -14px rgba(18,165,220,.95);
 }
-.tarjeta__save svg { width: 19px; height: 19px; }
+.tarjeta__save svg {
+  width: clamp(16px, 6.05vw, 29px); /* recalibrado */
+  height: clamp(16px, 6.05vw, 29px);
+}
 .tarjeta__save:hover { background: var(--blue-300); color: #06212F; }
 
 /* ---------- Filas de datos ---------- */
 .tarjeta__rows {
-  margin: 22px 20px 0;
+  margin: clamp(18px, 7vw, 34px) 20px 0; /* recalibrado, ver .tarjeta__id h1 */
   position: relative; z-index: 3;
 }
 .tarjeta__row {
   display: grid;
-  grid-template-columns: 19px minmax(0, 1fr);
-  gap: 13px;
-  padding: 13px 0;
+  grid-template-columns: clamp(15px, 5.73vw, 28px) minmax(0, 1fr); /* recalibrado */
+  gap: clamp(11px, 4.14vw, 20px); /* recalibrado */
+  padding: clamp(11px, 4.14vw, 20px) 0; /* recalibrado */
   border-top: 1px solid rgba(143,215,242,.18);
   align-items: start;
   text-decoration: none;
   color: #EAF6FC;
-  font-size: 13.5px;
+  font-size: clamp(12px, 4.3vw, 21px); /* recalibrado */
 }
-.tarjeta__row svg { width: 18px; height: 18px; color: var(--blue-300); margin-top: 3px; }
+.tarjeta__row svg {
+  width: clamp(15px, 5.73vw, 28px); /* recalibrado */
+  height: clamp(15px, 5.73vw, 28px);
+  color: var(--blue-300);
+  margin-top: 3px;
+}
 .tarjeta__row small {
   display: block;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: clamp(9px, 3.18vw, 15px); /* recalibrado */
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--dim);
@@ -262,6 +327,6 @@ body.tarjeta-page {
   border-top: 1px solid rgba(143,215,242,.14);
 }
 
-@media (max-width: 420px) {
-  .tarjeta__portrait { height: 320px; }
-}
+/* El breakpoint fijo de 320px que había aquí quedó retirado: el alto del
+   retrato ahora es la fórmula dvh de .tarjeta__portrait, que ya se adapta
+   sola a cualquier ancho sin necesitar un salto brusco a 420px. */
